@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommendations</title>
+    <style>
+        /* Basic styling for carousel and list */
+        .carousel {
+            display: flex;
+            overflow-x: scroll;
+        }
+        .carousel-item {
+            margin: 10px;
+            text-align: center;
+        }
+        .list-item {
+            margin: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        img {
+            width: 150px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Movie Recommendations (Iteration {{ iteration }})</h1>
+    {% if recommendation_type == 'carousel' %}
+        {% for genre, movies in recommendations.items() %}
+            <h2>{{ genre }}</h2>
+            <div class="carousel">
+                {% for movie in movies %}
+                    <div class="carousel-item">
+                        <form action="{{ url_for('click') }}" method="POST">
+                            <input type="hidden" name="movieId" value="{{ movie.movieId }}">
+                            <button type="submit" style="border: none; background: none;">
+                                <img src="{{ movie.Poster }}" alt="{{ movie.Title }}">
+                                <p>{{ movie.Title }} ({{ movie.Year }})</p>
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% elif recommendation_type == 'list' %}
+        {% for movie in recommendations %}
+            <div class="list-item">
+                <form action="{{ url_for('click') }}" method="POST">
+                    <input type="hidden" name="movieId" value="{{ movie.movieId }}">
+                    <button type="submit" style="border: none; background: none;">
+                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }}">
+                        <p>{{ movie.Title }} ({{ movie.Year }}) - Rating: {{ movie.imdbRating }}</p>
+                    </button>
+                </form>
+            </div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
