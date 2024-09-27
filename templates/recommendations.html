@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Recommendations</title>
+
     <style>
         /* Basic styling for carousel and list */
         .carousel {
@@ -25,12 +31,23 @@
 </head>
 <body>
     <h1>Movie Recommendations (Iteration {{ iteration }})</h1>
+    <!-- Phase Info Display -->
+    <div id="phase-info">
+        <p>Current phase: <span id="phase-name">Browsing</span></p>
+        <p>Time remaining: <span id="time-remaining">20</span> seconds</p>
+    </div>
+
+    <!-- Render either carousel or list based on the recommendation type -->
     {% if recommendation_type == 'carousel' %}
         {% for genre, movies in recommendations.items() %}
             <h2>{{ genre }}</h2>
-            <div class="carousel">
+            <div class="carousel"
+            row-position="{{ loop.index0 }}">
                 {% for movie in movies %}
-                    <div class="carousel-item">
+                    <div class="carousel-item movie-item"
+                         data-movie-id="{{ movie.movieId }}"
+                         col-position="{{ loop.index0 }}"
+                         data-genre="{{ genre }}">
                         <form action="{{ url_for('click') }}" method="POST">
                             <input type="hidden" name="movieId" value="{{ movie.movieId }}">
                             <button type="submit" style="border: none; background: none;">
@@ -44,7 +61,9 @@
         {% endfor %}
     {% elif recommendation_type == 'list' %}
         {% for movie in recommendations %}
-            <div class="list-item">
+            <div class="list-item movie-item"
+                 data-movie-id="{{ movie.movieId }}"
+                 data-position="{{ loop.index0 }}">
                 <form action="{{ url_for('click') }}" method="POST">
                     <input type="hidden" name="movieId" value="{{ movie.movieId }}">
                     <button type="submit" style="border: none; background: none;">
@@ -55,5 +74,185 @@
             </div>
         {% endfor %}
     {% endif %}
+
+    <!-- Hidden form for next iteration -->
+    <form id="next-iteration-form" action="{{ url_for('click') }}" method="POST" style="display: none;">
+        <input type="hidden" name="phase" value="end_of_decision">
+    </form>
+
+    <!-- Interaction Logging Script -->
+    <script>
+
+        // Initialize variables using Flask context
+        let iteration = {{ iteration }};
+        let sessionStartTime = new Date().toISOString();
+        //let interactionLog = [];
+
+// Initialize interactionLog if it doesn't already exist
+    if (!localStorage.getItem('interactionLog')) {
+        localStorage.setItem('interactionLog', JSON.stringify([]));  // Initialize as an empty array
+    }
+
+// Retrieve the interactionLog from localStorage
+let interactionLog = JSON.parse(localStorage.getItem('interactionLog')) || [];
+
+// Function to log events and update localStorage
+const logEvent = (eventType, eventDetails) => {
+    const event = {
+        eventType: eventType,
+        timestamp: new Date().toISOString(),
+        details: eventDetails
+    };
+    localStorage.setItem('interactionLog', JSON.stringify(interactionLog));
+    interactionLog.push(event);
+};
+
+        // Combined event listener for click logging and phase management
+        document.addEventListener('click', (e) => {
+            let target = e.target.closest('.movie-item');
+            console.log('Click detected', target);  // Log when a click is detected
+
+            let movieId = 'not_set';
+            let col_position = 0;
+            let row_position = 0;
+            let genre = 'not_set';
+            let selected_item = false;
+            let list_position= 0;
+
+            if (phase === 'browsing') {
+                e.preventDefault();
+                console.log('Click blocked during browsing phase');
+                currentphase = 'browsing'
+            }else{
+                currentphase = 'deciding';  
+            }
+
+            if (target) {
+                movieId = target.getAttribute('data-movie-id');
+                col_position = target.getAttribute('col-position');
+                row_position = target.getAttribute('row-position');
+                list_position = target.getAttribute('data-position');
+                genre = target.getAttribute('data-genre');
+                selected_item = true;
+
+                console.log('Movie clicked:', movieId, col_position, row_position, genre);
+            }else{
+                console.log("outside was clicked!");
+            }
+                // Log the click event
+                logEvent('click', {
+                    movieId: movieId,
+                    col_position: col_position,
+                    row_position: row_position,
+                    genre: genre,
+                    x: e.clientX,
+                    y: e.clientY,
+                    has_effect : selected_item,
+                });
+
+                const data = {
+                    user_id: {{ user_id }},
+                    interactions: interactionLog,
+                    session_parameters: {{ current_parameters | tojson }},
+                    start_time: sessionStartTime,
+                    end_time: new Date().toISOString()
+                };
+
+                console.log('Sending data:', data);  // Log data before sending
+                sendData();  // Send data to the server
+        });
+
+        // Mouse Movement Logging Script
+        let mouseLoggingEnabled = {{ current_parameters.mouse_logging | tojson }};
+        let mouseLoggingFrequency = parseInt({{ current_parameters.mouse_logging_freq }});
+
+        if (mouseLoggingEnabled) {
+            let lastMouseX = 0;
+            let lastMouseY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+            });
+
+            setInterval(() => {
+                logEvent('mousemove', { x: lastMouseX, y: lastMouseY });
+            }, mouseLoggingFrequency);
+        }
+
+        // Phase Management Script
+        let phase = 'browsing'; // 'browsing' or 'decision'
+        let phaseStartTime = new Date();
+        let phaseDuration = 20000; // 20 seconds for browsing
+
+        // Function to update the phase
+        const updatePhase = () => {
+            let elapsedTime = new Date() - phaseStartTime;
+            if (phase === 'browsing' && elapsedTime >= 20000) {
+                // Switch to decision phase
+                phase = 'decision';
+                phaseStartTime = new Date();
+                phaseDuration = 10000; // 10 seconds for decision
+                alert('You can now select a movie.');
+            } else if (phase === 'decision' && elapsedTime >= 10000) {
+                // Decision phase over
+                if (iteration <= 10) {
+
+                    document.getElementById('next-iteration-form').submit();
+                }
+
+            }
+        };
+
+        // Function to update the phase display
+        const updatePhaseDisplay = () => {
+            let elapsedTime = new Date() - phaseStartTime;
+            let timeRemaining = Math.ceil((phaseDuration - elapsedTime) / 1000);
+            document.getElementById('phase-name').innerText = phase.charAt(0).toUpperCase() + phase.slice(1);
+            document.getElementById('time-remaining').innerText = timeRemaining > 0 ? timeRemaining : 0;
+        };
+
+        // Update the phase and display every second
+        setInterval(() => {
+            updatePhase();
+            updatePhaseDisplay();
+        }, 1000);
+
+        // Data Submission Script
+        const sendData = () => {
+            // Prepare data
+            const data = {
+                user_id: {{ user_id }},
+                interactions: interactionLog,
+                session_parameters: {{ current_parameters | tojson }},
+                start_time: sessionStartTime,
+                end_time: new Date().toISOString()
+            };
+
+            console.log('Sending data:', data);  // Log data before sending
+
+            // Send data via AJAX
+            fetch('{{ url_for('submit_data') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                console.log('Server response:', response);  // Log server response
+                if (response.ok) {
+                    return response.json();  // Parse the JSON response
+                } else {
+                    throw new Error('Server error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);  // Log any errors
+                alert('An error occurred while submitting data.');
+            });
+        };
+    </script>
 </body>
 </html>

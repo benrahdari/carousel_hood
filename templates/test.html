@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- Only needed if using CSRF -->
+    <title>Send Data Example</title>
+</head>
+<body>
+    <h1>Send Data Simulation</h1>
+
+    <!-- Button to trigger the AJAX request -->
+    <button id="submit-btn">Submit Data</button>
+
+    <div id="response-message"></div>
+
+    <script>
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            // Simulated data to be sent to the server
+            const data = {
+                user_id: 123,
+                interactionLog: [{ eventType: 'click', details: 'example details' }],
+                start_time: new Date().toISOString(),
+                end_time: new Date().toISOString()
+            };
+
+            // Send data via AJAX using fetch
+            fetch('/submit_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(data)  // Send the data as JSON
+            })
+            .then(response => response.json())
+            .then(result => {
+                // Display response message on the page
+                document.getElementById('response-message').innerText = 'Response: ' + result.message;
+                console.log('Response:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response-message').innerText = 'Error sending data';
+            });
+        });
+    </script>
+</body>
+</html>

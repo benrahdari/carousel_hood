@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Flask Parameters</title>
+</head>
+<body>
+    <h1>Flask Parameters Available</h1>
+
+    <h2>Session Variables</h2>
+    <pre>{{ context.session | tojson(indent=4) }}</pre>
+
+    <h2>Query Parameters</h2>
+    <pre>{{ context.args | tojson(indent=4) }}</pre>
+
+    <h2>Form Data (POST requests)</h2>
+    <pre>{{ context.form | tojson(indent=4) }}</pre>
+
+    <h2>JSON Body (POST requests)</h2>
+    <pre>{{ context.json_body | tojson(indent=4) }}</pre>
+
+    <h2>Current User ID</h2>
+    <p>{{ context.session.user_id if 'user_id' in context.session else 'No user_id found in session' }}</p>
+
+    <h2>Current Parameters</h2>
+    <pre>{{ context.session.parameters if 'parameters' in context.session else 'No parameters in session' | tojson(indent=4) }}</pre>
+</body>
+</html>
