@@ -8,16 +8,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Recommendations</title>
 
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+  
     <style>
+
+        .carousel-item {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: scale(1.05);
+        }
+        
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            padding: 10px;
+        }
+        
+        .carousel-control-prev:hover .carousel-control-prev-icon,
+        .carousel-control-next:hover .carousel-control-next-icon {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+
+
         /* Basic styling for carousel and list */
         .carousel {
             display: flex;
             overflow-x: scroll;
         }
-        .carousel-item {
-            margin: 10px;
-            text-align: center;
-        }
+       
         .list-item {
             margin: 10px;
             padding: 10px;
@@ -41,21 +70,25 @@
     {% if recommendation_type == 'carousel' %}
 
 
-    {% for genre, genre_movies in recommendations.items() %}
+
+<!-- From here -->
+    
+{% for genre, genre_movies in recommendations.items() %}
     {% set outer_loop = loop %} <!-- Set the outer loop context -->
-    <h2>{{ genre }}</h2>
-    <div class="carousel" data-row-position="{{ outer_loop.index0 }}"> <!-- Use outer_loop.index0 -->
+    <h2 class="my-4">{{ genre }}</h2>
+    
+    <div class="slick-carousel" data-row-position="{{ outer_loop.index0 }}">
         {% for movie in genre_movies %}
-            <div class="carousel-item movie-item"
+            <div class="movie-item"
                  data-movie-id="{{ movie.movieId }}"
                  data-col-position="{{ loop.index0 }}" 
                  data-row-position="{{ outer_loop.index0 }}"  
                  data-genre="{{ genre }}">
-                <!--  <p>Row Position: {{ outer_loop.index0 }}</p> Display outer loop index -->
+                 
                 <form action="{{ url_for('click') }}" method="POST">
                     <input type="hidden" name="movieId" value="{{ movie.movieId }}">
-                    <button type="submit" style="border: none; background: none;">
-                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }}">
+                    <button type="submit" class="btn btn-link p-0 text-decoration-none">
+                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }}" style="width:200px; height:300px; object-fit: cover;">
                         <p>{{ movie.Title }} ({{ movie.Year }})</p>
                     </button>
                 </form>
@@ -63,6 +96,12 @@
         {% endfor %}
     </div>
 {% endfor %}
+
+<!-- To here -->
+
+
+
+
 
     {% elif recommendation_type == 'list' %}
         {% for movie in recommendations %}
@@ -84,6 +123,8 @@
     <form id="next-iteration-form" action="{{ url_for('click') }}" method="POST" style="display: none;">
         <input type="hidden" name="phase" value="end_of_decision">
     </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 
     <!-- Interaction Logging Script -->
     <script>
@@ -111,6 +152,42 @@ const logEvent = (eventType, eventDetails) => {
     localStorage.setItem('interactionLog', JSON.stringify(interactionLog));
     interactionLog.push(event);
 };
+
+
+    $(document).ready(function(){
+        $('.slick-carousel').slick({
+            slidesToShow: 5,
+            slidesToScroll: 5,
+            infinite: false,
+            dots: true,
+            arrows: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 4,
+                        infinite: false,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                }
+            ]
+        });
+    });
 
         // Combined event listener for click logging and phase management
         document.addEventListener('click', (e) => {
