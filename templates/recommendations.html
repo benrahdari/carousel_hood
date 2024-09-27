@@ -39,26 +39,31 @@
 
     <!-- Render either carousel or list based on the recommendation type -->
     {% if recommendation_type == 'carousel' %}
-        {% for genre, movies in recommendations.items() %}
-            <h2>{{ genre }}</h2>
-            <div class="carousel"
-            row-position="{{ loop.index0 }}">
-                {% for movie in movies %}
-                    <div class="carousel-item movie-item"
-                         data-movie-id="{{ movie.movieId }}"
-                         col-position="{{ loop.index0 }}"
-                         data-genre="{{ genre }}">
-                        <form action="{{ url_for('click') }}" method="POST">
-                            <input type="hidden" name="movieId" value="{{ movie.movieId }}">
-                            <button type="submit" style="border: none; background: none;">
-                                <img src="{{ movie.Poster }}" alt="{{ movie.Title }}">
-                                <p>{{ movie.Title }} ({{ movie.Year }})</p>
-                            </button>
-                        </form>
-                    </div>
-                {% endfor %}
+
+
+    {% for genre, genre_movies in recommendations.items() %}
+    {% set outer_loop = loop %} <!-- Set the outer loop context -->
+    <h2>{{ genre }}</h2>
+    <div class="carousel" data-row-position="{{ outer_loop.index0 }}"> <!-- Use outer_loop.index0 -->
+        {% for movie in genre_movies %}
+            <div class="carousel-item movie-item"
+                 data-movie-id="{{ movie.movieId }}"
+                 data-col-position="{{ loop.index0 }}" 
+                 data-row-position="{{ outer_loop.index0 }}"  
+                 data-genre="{{ genre }}">
+                <!--  <p>Row Position: {{ outer_loop.index0 }}</p> Display outer loop index -->
+                <form action="{{ url_for('click') }}" method="POST">
+                    <input type="hidden" name="movieId" value="{{ movie.movieId }}">
+                    <button type="submit" style="border: none; background: none;">
+                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }}">
+                        <p>{{ movie.Title }} ({{ movie.Year }})</p>
+                    </button>
+                </form>
             </div>
         {% endfor %}
+    </div>
+{% endfor %}
+
     {% elif recommendation_type == 'list' %}
         {% for movie in recommendations %}
             <div class="list-item movie-item"
@@ -129,8 +134,8 @@ const logEvent = (eventType, eventDetails) => {
 
             if (target) {
                 movieId = target.getAttribute('data-movie-id');
-                col_position = target.getAttribute('col-position');
-                row_position = target.getAttribute('row-position');
+                col_position = target.getAttribute('data-col-position');
+                row_position = target.getAttribute('data-row-position');
                 list_position = target.getAttribute('data-position');
                 genre = target.getAttribute('data-genre');
                 selected_item = true;
