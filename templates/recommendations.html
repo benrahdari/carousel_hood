@@ -19,7 +19,7 @@
     <style>
 
         .header {
-            background-color: #f8f9fa;
+            background-color: #00000030;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
@@ -103,16 +103,18 @@
 
     <header class="header sticky-top">
         <div class="header-left">
-            <p><strong>Current Phase: </strong>Browsing &nbsp;|&nbsp; <a href="#" data-bs-toggle="modal" data-bs-target="#taskDescriptionModal">View Full Task</a></p>
+            <p class="mb-0 text-secondary"><strong>Current Round: </strong><span id="currentround"> ... </span>/10</p>
+            <p class="mb-2 text-secondary"><strong>Current Task: </strong><span id="currenttask"> ... </span></p>
+            <a class="btn btn-sm btn-secondary"  onclick="showtaskdesc();">View Full Task</a>
         </div>
         <div class="header-right">
             <div class="row">
             <div class="d-flex col-4 p-2 m-1 bg-primary text-white rounded" style="flex-direction:column; justify-content: center; ">
-                <p class="small my-1">Current Phase</p>
+                <p class="small my-1">Current Task</p>
                 <p class="my-1 fs-4" id="phase-name">Browsing</p>
             </div>
-            <div class="d-flex col-4 p-2 m-1 bg-secondary text-white rounded" style="flex-direction:column; justify-content: center; ">
-                <p class="small my-1" >Remaining</p>
+            <div class=" d-flex col-4 p-2 m-1 bg-secondary text-white rounded" style="flex-direction:column; justify-content: center; ">
+                <p class="small my-1" >Remaining time</p>
                 <p class="my-1 fs-4" id="time-remaining">20 seconds</p>
             </div>
         </div>
@@ -120,7 +122,7 @@
     </header>
 
         <!-- Task Description Modal -->
-        <div class="modal fade" id="taskDescriptionModal" tabindex="-1" aria-labelledby="taskDescriptionLabel" aria-hidden="true">
+        <!-- <div class="modal fade" id="taskDescriptionModal" tabindex="-1" aria-labelledby="taskDescriptionLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -135,8 +137,25 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
+        <!-- Modal Template -->
+<div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dynamicModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Modal content goes here...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
         {% if recommendation_type == 'carousel' %}
@@ -221,6 +240,35 @@
     <!-- Interaction Logging Script -->
     <script>
 
+        
+        // Function to show a modal with dynamic content
+const showModal = (title, content, className, dismissible) => {
+    // Update modal title and content
+    $('#dynamicModalLabel').text(title);
+    $('.modal-body').html(content);
+
+    // Apply the class to the modal (if specified)
+    if (className) {
+        $('#dynamicModal .modal-header').removeClass().addClass('modal-header').addClass(className);
+    }
+
+    // Configure dismiss behavior
+    if (dismissible) {
+        $('#dynamicModal').modal({ backdrop: true, keyboard: true });
+    } else {
+        $('#dynamicModal').modal({ backdrop: 'static', keyboard: false });
+    }
+
+    // Show the modal
+    $('#dynamicModal').modal('show');
+};
+
+
+function showtaskdesc(){
+    showModal("Task description", "You have a chance to win a movie on your streaming service of choice. In each round, you will be presented with a set of movies. Select the movie you most want to have. You have 20 seconds to browse and 10 seconds to decide. There are 10 rounds so this takes around 3-4 minutes. Your selections help determine if you win, but even if you don’t, you’ll still get a code at the end to get paid for your time.", "bg-primary", false);
+}
+
+
         // Initialize variables using Flask context
         let iteration = {{iteration}};
         let sessionStartTime = new Date().toISOString();
@@ -247,6 +295,9 @@
 
 
         $(document).ready(function () {
+
+
+            
             $('.slick-carousel').slick({
                 infinite: true,
                 slidesToShow: 5,
@@ -310,7 +361,6 @@
             end_time: new Date().toISOString()
                 };
 
-        console.log('Sending data:', data);  // Log data before sending
         sendData();  // Send data to the server
         });
 
@@ -332,71 +382,114 @@
             }, mouseLoggingFrequency);
         }
 
-        // Phase Management Script
-        phase = 'browsing'; // 'browsing' or 'decision'
-        let phaseStartTime = new Date();
-        let phaseDuration = 20000; // 20 seconds for browsing
 
-        // Function to update the phase
-        const updatePhase = () => {
-            let elapsedTime = new Date() - phaseStartTime;
-            if (phase === 'browsing' && elapsedTime >= 20000) {
-                // Switch to decision phase
-                phase = 'decision';
-                phaseStartTime = new Date();
-                phaseDuration = 10000; // 10 seconds for decision
-                //alert('You can now select a movie.');
-            } else if (phase === 'decision' && elapsedTime >= 10000) {
-                // Decision phase over
-                if (iteration <= 10) {
-                    
-                    document.getElementById('next-iteration-form').submit();
+       // Phase Management Script
+phase = 'browsing'; // 'browsing' or 'decision'
+let phaseStartTime = new Date();
+let phaseDuration = 20000; // 20 seconds for browsing
+let isTimerPaused = false;
+let pauseStartTime = null; // Time when the modal is opened
+let totalPauseDuration = 0; // Total time spent while modal is open
+
+// Function to update the phase
+const updatePhase = () => {
+    let elapsedTime = new Date() - phaseStartTime - totalPauseDuration; // Subtract total pause duration
+
+    if (phase === 'browsing' && elapsedTime >= 20000) {
+        // Switch to decision phase
+        phase = 'decision';
+        phaseStartTime = new Date(); // Reset start time
+        totalPauseDuration = 0; // Reset pause duration
+        phaseDuration = 10000; // 10 seconds for decision
+
+        // Show a modal indicating entering decision phase
+        showModal('Time\'s up', 'You are entering the decision making phase. Please select the movie YOU WANT THE MOST within in next 10 seconds.', 'bg-success text-white', true);
+
+    } else if (phase === 'decision' && elapsedTime >= 10000) {
+        // Decision phase over
+        
+
+        if (iteration <= 10) {  
+
+            //showModal('Time\'s up', 'You are entering the decision phase. Please select the movie you want the most within in next 10 seconds.', 'bg-success text-white', false);
+            let userConfirmed = confirm('You did not select any movie but it\'s OK. Please make sure you select a movie witin the first 10 seconds of decision making phase next time.');
+            if(userConfirmed){
+                phase = 'browsing';
+                document.getElementById('next-iteration-form').submit();
+                return;
             }
+           
+        }else{
+            showModal('compeleted', 'Thank you. The experiment has concluded. Here is your code: AABB1232', 'bg-success text-white', true);
         }
-        };
+    }
+};
 
-        // Function to update the phase display
-        //const updatePhaseDisplay = () => {
-        //    let elapsedTime = new Date() - phaseStartTime;
-        //    let timeRemaining = Math.ceil((phaseDuration - elapsedTime) / 1000);
-       //     document.getElementById('phase-name').innerText = phase.charAt(0).toUpperCase() + phase.slice(1);
-//
-        //    document.getElementById('time-remaining').innerText = timeRemaining > 0 ? timeRemaining : 0;
-//
-        //};
+// Function to update the phase display
+const updatePhaseDisplay = () => {
+    let elapsedTime = new Date() - phaseStartTime - totalPauseDuration; // Subtract total pause duration
+    let timeRemaining = Math.ceil((phaseDuration - elapsedTime) / 1000);
 
-        const updatePhaseDisplay = () => {
-            let elapsedTime = new Date() - phaseStartTime;
-            let timeRemaining = Math.ceil((phaseDuration - elapsedTime) / 1000);
-            
-            // Get references to elements
-            const phaseNameElement = document.getElementById('phase-name');
-            const timeRemainingElement = document.getElementById('time-remaining');
+    // Get references to elements
+    const currenttask = document.getElementById('currenttask');
+    const currentround = document.getElementById('currentround');
+    const phaseNameElement = document.getElementById('phase-name');
+    const timeRemainingElement = document.getElementById('time-remaining');
+
+    currentround.innerText = {{iteration}};
+
+    // Update phase name and background color for "Deciding" phase
+    if (phase === 'decision') {
+        currenttask.innerText = 'Deciding...';
+        phaseNameElement.innerText = 'Decision';
+        phaseNameElement.parentElement.classList.add('bg-danger', 'text-white');
+    } else {
+        currenttask.innerText = 'Browsing...';
+        phaseNameElement.innerText = phase.charAt(0).toUpperCase() + phase.slice(1);
+        phaseNameElement.parentElement.style.backgroundColor = ''; // Reset background color
+    }
+
+    // Update time remaining and change color during last 3 seconds
+    timeRemainingElement.innerText = timeRemaining > 0 ? timeRemaining : 0;
+    if (timeRemaining <= 5 && timeRemaining > 3) {
+        timeRemainingElement.style.color = 'orange'; // Change text color to orange
+        timeRemainingElement.style.fontWeight = 'bold';
         
-            // Update phase name and background color for "Deciding" phase
-            if (phase === 'decision') {
-                phaseNameElement.innerText = 'Decision';
-                phaseNameElement.parentElement.classList.add('bg-danger', 'text-white');
-            } else {
-                phaseNameElement.innerText = phase.charAt(0).toUpperCase() + phase.slice(1);
-                phaseNameElement.parentElement.style.backgroundColor = ''; // Reset background color
-            }
-        
-            // Update time remaining and change color during last 3 seconds
-            timeRemainingElement.innerText = timeRemaining > 0 ? timeRemaining : 0;
-            if (timeRemaining <= 3 && timeRemaining > 0) {
-                timeRemainingElement.style.color = 'red'; // Change text color to red
-            } else {
-                timeRemainingElement.style.color = ''; // Reset text color
-            }
-            timeRemainingElement.innerText += " seconds";
-        };
+    }
 
-        // Update the phase and display every second
-        setInterval(() => {
-            updatePhase();
-            updatePhaseDisplay();
-        }, 1000);
+    else if (timeRemaining <= 3 && timeRemaining > 0) {
+        timeRemainingElement.style.color = 'red'; // Change text color to red
+        timeRemainingElement.style.fontWeight = 'bold';
+
+    } else {
+        timeRemainingElement.style.color = ''; // Reset text color
+        timeRemainingElement.style.fontWeight = 'normal';
+    }
+    timeRemainingElement.innerText += " seconds";
+};
+
+// Event listeners for modal show/hide to track pause time
+$('#dynamicModal').on('shown.bs.modal', function () {
+    pauseStartTime = new Date();  // Set the time when the modal was shown
+    isTimerPaused = true;
+});
+
+$('#dynamicModal').on('hidden.bs.modal', function () {
+    if (pauseStartTime) {
+        // Calculate the time the modal was open and add it to totalPauseDuration
+        totalPauseDuration += new Date() - pauseStartTime;
+        pauseStartTime = null;  // Reset the pause start time
+    }
+    isTimerPaused = false;
+});
+
+// Update the phase and display every second
+setInterval(() => {
+    if (!isTimerPaused) {  // Only update if the timer is not paused
+        updatePhase();
+        updatePhaseDisplay();
+    }
+}, 1000);
 
         // Data Submission Script
         const sendData = () => {
@@ -405,7 +498,7 @@
                 user_id: {{user_id}},
             interactions: interactionLog,
             session_parameters: {{current_parameters | tojson }},
-        start_time: sessionStartTime,
+            start_time: sessionStartTime,
             end_time: new Date().toISOString()
             };
 
@@ -434,48 +527,17 @@
             });
         };
 
-
-            function showToast(title="test", priority="primary", message="This is a test!") {
-                // Attach the toast directly to the body element
-                const container = document.body;
+        $('#dynamicModal').on('shown.bs.modal', function () {
+            // Pause the timer when the modal is shown
+            console.log('time is paused');
+            isTimerPaused = true;
+        });
         
-                // Create a unique ID for each toast
-                const toastId = 'toast-' + new Date().getTime();
-        
-                // Create the toast HTML structure dynamically
-                const toastHTML = `
-                    <div id="${toastId}" class="toast text-bg-${priority} position-fixed top-0 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 11;">
-                        <div class="toast-header">
-                            <strong class="me-auto">${title}</strong>
-                            <small>Just now</small>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                        <div class="toast-body">
-                            ${message}
-                        </div>
-                    </div>
-                `;
-        
-                // Append the toast to the body
-                container.insertAdjacentHTML('beforeend', toastHTML);
-        
-                // Initialize the toast element using Bootstrap's Toast API
-                const toastElement = document.getElementById(toastId);
-                const toast = new bootstrap.Toast(toastElement, { delay: 10 });
-        
-                // Show the toast
-                toast.show();
-        
-                // Remove the toast from the DOM once it's hidden
-                toastElement.addEventListener('hidden.bs.toast', () => {
-                    toastElement.remove();
-                });
-            
-        
-            // Example of calling the showToast function after DOM is loaded
-            
-        }
-        
+        $('#dynamicModal').on('hidden.bs.modal', function () {
+            // Resume the timer when the modal is closed
+            console.log('time restarts');
+            isTimerPaused = false;
+        });
 
 
     </script>
