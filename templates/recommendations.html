@@ -17,46 +17,86 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
    
     <style>
-        .carousel-item {
+
+        .slick-carousel {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
+            gap: 20px;
+            padding: 15px 0;
+            overflow-x: auto;
+            scroll-behavior: smooth;
         }
-
-        .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s;
+    
+        .slick-carousel::-webkit-scrollbar {
+            display: none;
         }
-
-        .card:hover {
+    
+        .movie-item {
+            flex: 0 0 auto;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+    
+        .movie-item img:hover {
             transform: scale(1.05);
         }
 
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 25%;
-            padding: 5px;
-        }
 
-        .carousel-control-prev:hover .carousel-control-prev-icon,
-        .carousel-control-next:hover .carousel-control-next-icon {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-
-
-        /* Basic styling for carousel and list */
-        .carousel {
+        .header {
+            background-color: #f8f9fa;
+            padding: 20px;
             display: flex;
-            overflow-x: scroll;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ccc;
         }
 
-        .list-item {
-            margin: 10px;
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
+        .header-left {
+            flex: 1;
         }
 
+        .header-right {
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .carousel {
+            margin-top: 20px;
+        }
+
+        .slick-carousel {
+            display: flex;
+            justify-content: flex-start;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 10px 0;
+        }
+
+        .slick-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .movie-item {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+
+        .movie-item img {
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .movie-item img:hover {
+            transform: scale(1.05);
+        }
+
+        .task-button {
+            margin-left: 15px;
+            cursor: pointer;
+        }
         img {
             width: 150px;
             height: auto;
@@ -65,45 +105,43 @@
 </head>
 
 <body id="main">
-    <!-- <h1>Movie Recommendations (Iteration {{ iteration }})</h1>
-    <div id="phase-info">
-        <p>Current phase: <span id="phase-name">Browsing</span></p>
-        <p>Time remaining: <span id="time-remaining">20</span> seconds</p>
-    </div> -->
-    <div class="container mt-4">
-        <div class="row">
-            <!-- Column 1: Movie title and descriptive text -->
-            <div class="col-md-4">
-                <h2>Movie Recommendations</h2>
-                <p class="bg-light p-3 rounded">
-                    Iteration {{ iteration }} <br>
-                    Enjoy personalized recommendations tailored just for you. <br>
-                    Explore a wide range of genres and find your next favorite movie!
-                </p>
+
+    <header class="header">
+        <div class="header-left">
+            <p><strong>Current Phase: </strong>Browsing <br> Select a movie based on your preference.</p>
+            <button class="btn btn-outline-primary task-button" data-bs-toggle="modal" data-bs-target="#taskDescriptionModal">View Full Task</button>
+        </div>
+        <div class="header-right">
+            <div class="p-3 bg-primary text-white rounded">
+                <h4>Current Phase</h4>
+                <p id="phase-name">Browsing</p>
             </div>
-            
-            <!-- Column 2: Phase and Time Information -->
-            <div class="col-md-4 d-flex flex-column justify-content-center">
-                <div class="p-3 bg-primary text-white rounded mb-2">
-                    <h4>Current Phase</h4>
-                    <p id="phase-name">Browsing</p>
-                </div>
+            <div class="p-3 bg-secondary text-white rounded">
+                <h4>Time Remaining</h4>
+                <p id="time-remaining">20</p> seconds
             </div>
-    
-            <!-- Column 3: Text Area -->
-            <div class="col-md-4 d-flex flex-column justify-content-center">
-                <div class="p-3 bg-secondary text-white rounded">
-                    <h4>Time Remaining</h4>
-                    <p id="time-remaining">20</p> seconds
+        </div>
+    </header>
+
+        <!-- Task Description Modal -->
+        <div class="modal fade" id="taskDescriptionModal" tabindex="-1" aria-labelledby="taskDescriptionLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="taskDescriptionLabel">Task Description</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You have a chance to win a movie on your streaming service of choice. In each round, you will be presented with a set of movies. Select the movie you most want to have. You have 20 seconds to browse and 10 seconds to decide. There are 10 rounds so this takes around 3-4 minutes. Your selections help determine if you win, but even if you don’t, you’ll still get a code at the end to get paid for your time.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Render either carousel or list based on the recommendation type -->
-
-    <!-- Carousel From here -->
-    {% if recommendation_type == 'carousel' %}
+{% if recommendation_type == 'carousel' %}
     {% for genre, genre_movies in recommendations.items() %}
     {% set outer_loop = loop %}
     <h2 class="my-4">{{ genre }}</h2>
@@ -111,12 +149,12 @@
         {% for movie in genre_movies %}
         <div class="movie-item" data-movie-id="{{ movie.movieId }}" data-col-position="{{ loop.index0 }}"
             data-row-position="{{ outer_loop.index0 }}" data-genre="{{ genre }}">
-            <form action="{{ url_for('click') }}" method="POST">
+            <form action="{{ url_for('click') }}" method="POST" class="text-center">
                 <input type="hidden" name="movieId" value="{{ movie.movieId }}">
                 <button type="submit" class="btn btn-link p-0 text-decoration-none">
                     <img src="{{ movie.Poster }}" alt="{{ movie.Title }}"
-                        style="width:100px; height:150px; object-fit: contain;">
-                    <p>{{ movie.Title }} ({{ movie.Year }})</p>
+                        class="img-fluid rounded" style="width:150px; height:225px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); transition: transform 0.2s;">
+                    <p class="mt-2">{{ movie.Title }} ({{ movie.Year }})</p>
                 </button>
             </form>
         </div>
@@ -124,6 +162,7 @@
     </div>
     {% endfor %}
     <!-- To here -->
+
 
     <!-- List From here -->
     {% elif recommendation_type == 'list' %}
@@ -165,12 +204,9 @@
         </div>
     </div>
 {% endif %}
-
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
-    <div id="toast-container"></div> <!-- This is where toasts will be inserted -->
-</div>
-
     <!-- To here -->
+
+
 
     <!-- Hidden form for next iteration -->
     <form id="next-iteration-form" action="{{ url_for('click') }}" method="POST" style="display: none;">
@@ -339,13 +375,7 @@
                     
                     document.getElementById('next-iteration-form').submit();
             }
-
-            }else if (phase === 'decision'){
-                showToast('times up', 'danger', 'You can now select a movie.');
-            }
-            else{
-                showToast('restart', 'warning', 'You must browse the movies now.');
-            }
+        }
         };
 
         // Function to update the phase display
