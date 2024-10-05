@@ -100,7 +100,6 @@
 </head>
 
 <body id="main">
-
     <header class="header sticky-top">
         <div class="header-left">
             <p class="mb-0 text-secondary"><strong>Current Round: </strong><span id="currentround"> ... </span>/10</p>
@@ -121,8 +120,7 @@
         </div>
     </header>
 
-
-        <!-- Modal Template -->
+<!-- Modal Template -->
 <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -140,15 +138,18 @@
     </div>
 </div>
 
+
+
 <!-- Carousel From here -->
         {% if recommendation_type == 'carousel' %}
+         {% set outer_loop = loop %}
         <div class="container my-4">
             {% for genre, genre_movies in recommendations.items() %}
             <h2 class="mt-4 mb-0">{{ genre }} Movies</h2>
             <hr class="my-0 py-0 w-100 mx-auto">
             <div class="slick-carousel" data-row-position="{{ loop.index0 }}">
                 {% for movie in genre_movies %}
-                <div class="movie-item" data-movie-id="{{ movie.movieId }}" data-col-position="{{ loop.index0 }}">
+                <div class="movie-item" data-movie-id="{{ movie.movieId }}" data-col-position="{{ loop.index0 }}" data-row-position="{{ outer_loop.index0 }}" data-genre="{{ movie.genres }}" >
                     <form action="{{ url_for('click') }}" method="POST" class="text-center">
                         <input type="hidden" name="movieId" value="{{ movie.movieId }}">
                         <div style="max-inline-size: fit-content;">
@@ -173,7 +174,6 @@
         </div>
     <!-- To here -->
 
-
     <!-- List From here -->
 {% elif recommendation_type == 'list' %}
 <div class="container my-4">
@@ -186,19 +186,14 @@
                         <img src="{{ movie.Poster }}" alt="{{ movie.Title }} Poster" class="img-fluid rounded-start" style="object-fit: cover; width:150px!important;">
                     </div>
                     <div class="col-md-10">
-                        <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="card-body d-flex flex-column justify-content-between" data-row-position="{{ loop.index0 }}">
                             <div>
-                                <!-- Movie title and rating -->
+                               
                                 <h5 class="card-title">{{ movie.Title }}</h5>
-                                <!-- <div class="d-flex justify-content-between" style="flex-direction: column-reverse; flex-wrap: wrap ">
-                                    <small class="text-muted">Rating: {{ movie.imdbRating }}/10</small>
-                                    <small class="text-muted">Genres: {{ movie.genres }}</small>
-                                    <small class="text-muted">Year: {{ movie.Year }}</small>
-                                </div> -->
-                                <!-- Movie description -->
+                                
                                 <p class="card-text mt-2">{{ movie.description|truncate(100) }}</p>
                             </div>
-                            <!-- Form to submit the movie click -->
+                            <div class="movie-item" data-movie-id="{{ movie.movieId }}" data-col-position="{{ loop.index0 }}" data-row-position="n/a" data-genre="{{ movie.genres }}" style="min-height:auto!important; text-align:left!important;" >
                             <form action="{{ url_for('click') }}" method="POST" class="mt-3">
                                 <input type="hidden" name="movieId" value="{{ movie.movieId }}">
                                 <button type="submit" class="btn btn-sm btn-success btn-select d-none">Select this movie</button>
@@ -211,6 +206,7 @@
 
 
                             </form>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -236,13 +232,14 @@
     <!-- Interaction Logging Script -->
     <script>
 
+
+        
         
         // Function to show a modal with dynamic content
 const showModal = (title, content, className, dismissible) => {
     // Update modal title and content
     $('#dynamicModalLabel').text(title);
     $('.modal-body').html(content);
-
     // Apply the class to the modal (if specified)
     if (className) {
         $('#dynamicModal .modal-header').removeClass().addClass('modal-header').addClass(className);
@@ -254,7 +251,6 @@ const showModal = (title, content, className, dismissible) => {
     } else {
         $('#dynamicModal').modal({ backdrop: 'static', keyboard: false });
     }
-
     // Show the modal
     $('#dynamicModal').modal('show');
 };
@@ -305,7 +301,14 @@ function showtaskdesc(){
                 draggable: false
             });
 
-            
+                // Update the phase and display every second
+intloop = setInterval(() => {
+    if (!isTimerPaused) {  // Only update if the timer is not paused
+        updatePhase();
+        updatePhaseDisplay();
+    }
+}, 1000);
+         
         });
 
         // Combined event listener for click logging and phase management
@@ -319,6 +322,7 @@ function showtaskdesc(){
             let genre = 'not_set';
             let selected_item = false;
             let list_position = 0;
+            click_on_movie = false;
 
             if (phase === 'browsing') {
                 e.preventDefault();
@@ -334,7 +338,7 @@ function showtaskdesc(){
                 row_position = target.getAttribute('data-row-position');
                 list_position = target.getAttribute('data-position');
                 genre = target.getAttribute('data-genre');
-                selected_item = true;
+                click_on_movie = true;
 
                 console.log('Movie clicked:', movieId, col_position, row_position, genre);
             } else {
@@ -348,7 +352,7 @@ function showtaskdesc(){
                 genre: genre,
                 x: e.clientX,
                 y: e.clientY,
-                has_effect: selected_item,
+                click_on_movie: click_on_movie,
             });
 
             const data = {
@@ -490,14 +494,6 @@ $('#dynamicModal').on('hidden.bs.modal', function () {
     isTimerPaused = false;
 });
 
-// Update the phase and display every second
-setInterval(() => {
-    if (!isTimerPaused) {  // Only update if the timer is not paused
-        updatePhase();
-        updatePhaseDisplay();
-    }
-}, 1000);
-
         // Data Submission Script
         const sendData = () => {
             // Prepare data
@@ -512,7 +508,7 @@ setInterval(() => {
         console.log('Sending data:', data);  // Log data before sending
 
         // Send data via AJAX
-        fetch('{{ url_for('submit_data') }}', {
+        fetch("{{url_for('submit_data')}}",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -521,9 +517,12 @@ setInterval(() => {
             body: JSON.stringify(data)
         })
             .then(response => {
+
                 console.log('Server response:', response);  // Log server response
                 if (response.ok) {
                     return response.json();  // Parse the JSON response
+
+
                 } else {
                     throw new Error('Server error');
                 }
@@ -532,6 +531,7 @@ setInterval(() => {
                 console.error('Error:', error);  // Log any errors
                 alert('An error occurred while submitting data.');
             });
+
         };
 
         $('#dynamicModal').on('shown.bs.modal', function () {

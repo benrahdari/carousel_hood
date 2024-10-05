@@ -9,9 +9,7 @@ from spotlight.cross_validation import random_train_test_split
 from spotlight.evaluation import rmse_score
 import json
 import os
-
 from flask_wtf import CSRFProtect
-
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -22,7 +20,6 @@ csrf = CSRFProtect(app)
 # Configure session to use filesystem (instead of signed cookies)
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
-
 
 # Configuration for data paths
 MOVIES_PATH = 'data/movie_metadata.json'  # Update with the correct path
@@ -128,7 +125,6 @@ class MovieRecommender:
 def load_movies(json_path):
     with open(json_path, 'r') as f:
         movies = json.load(f)
-    
     movies_df = pd.DataFrame(movies)
     expected_columns = {'movieId', 'Title', 'Year', 'imdbRating', 'Poster', 'genres'}
     
@@ -278,37 +274,45 @@ def get_current_recommendations(item_scores, clicked_items, recommender, recomme
     else:
         raise ValueError("Invalid recommendation_type. Choose 'carousel' or 'list'.")
 
+
+import random
+import string
+
+
 # Landing page route
 @app.route('/study', methods=['GET'])
 @csrf.exempt
 def landing_page():
-    # Get query parameters
-    type_param = request.args.get('type', 'adaptive')          # 'adaptive' or 'control'
-    baseline_param = request.args.get('baseline', 'popularity')  # 'random' or 'popularity'
-    ui_param = request.args.get('ui', 'carousel')             # 'carousel' or 'list'
-    mouse_logging_param = request.args.get('mouse_logging', 'false')
-    mouse_logging_freq_param = request.args.get('mouse_logging_freq', '500')  # Default 500ms
+    if 'parameters' not in session:
+        # Get query parameters
+        type_param = request.args.get('type', 'adaptive')          # 'adaptive' or 'control'
+        baseline_param = request.args.get('baseline', 'popularity')  # 'random' or 'popularity'
+        ui_param = request.args.get('ui', 'carousel')             # 'carousel' or 'list'
+        mouse_logging_param = request.args.get('mouse_logging', 'false')
+        mouse_logging_freq_param = request.args.get('mouse_logging_freq', '500')  # Default 500ms
 
-    # Update session parameters
-    session['parameters'] = {
-        'type': type_param,
-        'baseline': baseline_param,
-        'ui': ui_param,
-        'mouse_logging': mouse_logging_param.lower() == 'true',
-        'mouse_logging_freq': int(mouse_logging_freq_param)
-    }
+        # Set session parameters
+        session['parameters'] = {
+            'type': type_param,
+            'baseline': baseline_param,
+            'ui': ui_param,
+            'mouse_logging': mouse_logging_param.lower() == 'true',
+            'mouse_logging_freq': int(mouse_logging_freq_param)
+        }
+
     params = session['parameters']
     recommendation_type = params['ui']          # 'carousel' or 'list'
     update_type = params['type']                # 'adaptive' or 'control'
     baseline_type = params['baseline']          # 'random' or 'popularity'
+
 
     if 'iteration' not in session:
         # First visit, initialize user state
         session['iteration'] = 1
         session['clicked_items'] = []
         # Generate a new user_id
-        user_id = max(recommender.ratings_df['userId'].unique()) + 1
-        session['user_id'] = int(user_id)
+        user_id = ''.join(random.choices(string.digits, k=6))
+        session['user_id'] = user_id
         # Initialize item_scores based on baseline
         num_items = 500
         baseline_recommendations = get_baseline_recommendations(
@@ -338,7 +342,8 @@ def landing_page():
     iteration = session['iteration']
 
     if iteration > 10:
-        return render_template('completion.html')
+        uid = session['user_id']
+        return render_template('completion.html', uid=uid)
 
     # Generate current recommendations
     recommendations = get_current_recommendations(
@@ -441,7 +446,8 @@ def click():
 @app.route('/completion', methods=['GET'])
 @csrf.exempt
 def completion():
-    return render_template('completion.html')
+    uid = session['user_id']
+    return render_template('completion.html',uid=uid)
 
 # Route to clear the session
 @app.route('/clear_session', methods=['GET'])
@@ -462,7 +468,7 @@ def submit_data():
         return jsonify({"message": "No data received"}), 400
 
     user_id = data.get('user_id')
-    folder = 'experiment_data/'  # Adjust the folder path as needed
+    folder = 'experiment_data/'  
     # Ensure the folder exists
     os.makedirs(folder, exist_ok=True)
     # Save the data to a JSON file
@@ -472,10 +478,32 @@ def submit_data():
     # Return a response
     return jsonify({"message": "Data received and saved successfully"}), 200
 
-# Route to render a simple form (with or without JavaScript functionality)
-@app.route('/test')
-def test():
-    return render_template('test.html')
+
+# Route to handle survey data submission
+@app.route('/submit_survey', methods=['POST'])
+@csrf.exempt
+def submit_survey():
+    data = request.get_json(force=True)
+
+    if data is None:
+        print("No data received")
+        return jsonify({"message": "No data received"}), 400
+
+    user_id = data.get('user_id')
+    if not user_id:
+        return jsonify({"message": "User ID is missing"}), 400
+
+    # Prepare the folder for saving data
+    folder = 'experiment_data/survey'  
+    os.makedirs(folder, exist_ok=True)
+
+    # Save the data to a JSON file named after the user_id
+    filename = os.path.join(folder, f'{user_id}_survey.json')
+    with open(filename, 'w') as file:
+        json.dump(data, file)
+
+    # Return a success response
+    return jsonify({"message": "Survey data received and saved successfully"}), 200
 
 @app.route('/show_params', methods=['GET'])
 def show_params():
@@ -487,3 +515,51 @@ def show_params():
         'json_body': request.get_json(silent=True)  # JSON body (POST)
     }
     return render_template('show_params.html', context=context)
+
+
+GROUP_FILE = 'experiment_data/groups/group_data.json'
+
+# Initialize the groups
+def load_groups():
+    if os.path.exists(GROUP_FILE):
+        with open(GROUP_FILE, 'r') as f:
+            return json.load(f)
+    else:
+        return [0] * 8  # 8 groups for the 2x2x2 factorial design
+
+def save_groups(groups):
+    with open(GROUP_FILE, 'w') as f:
+        json.dump(groups, f)
+
+def balanced_assign_participant(groups):
+    min_index = np.argmin(groups)
+    groups[min_index] += 1
+    save_groups(groups)  # Save updated groups after assignment
+    return min_index
+
+@app.route('/start')
+@csrf.exempt  # Exempt this route from CSRF protection
+def assign_participant():
+    groups = load_groups()  # Load the current group distribution
+    group_index = balanced_assign_participant(groups)
+    
+    # Mapping based on group index
+    mapping = {
+        0: ('control', 'random', 'list'),
+        1: ('control', 'random', 'carousel'),
+        2: ('control', 'popularity', 'list'),
+        3: ('control', 'popularity', 'carousel'),
+        4: ('adaptive', 'random', 'list'),
+        5: ('adaptive', 'random', 'carousel'),
+        6: ('adaptive', 'popularity', 'list'),
+        7: ('adaptive', 'popularity', 'carousel')
+    }
+    
+    # Get the mapped parameters based on the group index
+    type_param, baseline_param, ui_param = mapping[group_index]
+
+    # Construct the redirect URL
+    redirect_url = url_for('landing_page', type=type_param, baseline=baseline_param, ui=ui_param)
+    
+    # Redirect to the /study route with the selected parameters
+    return redirect(redirect_url)
