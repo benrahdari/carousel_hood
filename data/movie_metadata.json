@@ -339,7 +339,7 @@
         "Title": "Kicking & Screaming: Behind the Net - The Making of 'Kicking & Screaming'",
         "Year": "2005",
         "imdbRating": "5.5",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BNDY3NjUyODMtMGY5OS00M2Q1LTllOGItZGQ0YTFiNjhhNDZiXkEyXkFqcGc@._V1_.jpg",
         "movieId": 185,
         "genres": "Action|Crime|Thriller"
     },
@@ -610,8 +610,8 @@
     {
         "Title": "The Adventures of Priscilla, Queen of the Desert: The Bus from Blooperville",
         "Year": "2005",
-        "imdbRating": "N/A",
-        "Poster": "N/A",
+        "imdbRating": "8.1",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BNDY1M2Q5NDUtMjQ4Zi00OTE4LWEyNGEtOWViZTJmNjA2ZmZmXkEyXkFqcGc@._V1_.jpg",
         "movieId": 345,
         "genres": "Comedy|Drama"
     },
@@ -1322,8 +1322,8 @@
     {
         "Title": "The Affordable Apartment: The Toilet of Tomorrow",
         "Year": "2009",
-        "imdbRating": "N/A",
-        "Poster": "N/A",
+        "imdbRating": "7.2",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BNmEyNjZlNDAtYmE2Mi00MjhiLTk2NWItMTE2ZTQyNDUxOWE3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         "movieId": 909,
         "genres": "Comedy|Drama|Romance"
     },
@@ -1371,7 +1371,7 @@
         "Title": "My Favorite Fairy Tales Volume 4: The Wizard of Oz; The Magic Carpet; Alibaba and Forty Thieves",
         "Year": "1986",
         "imdbRating": "5.8",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BYjQwODZlZTMtNzA4Mi00NzI5LWIwNTYtY2UxMWFlZTVmMGY0XkEyXkFqcGdeQXVyMTc1OTk1MjA1._V1_.jpg",
         "movieId": 919,
         "genres": "Adventure|Children|Fantasy|Musical"
     },
@@ -1474,7 +1474,7 @@
     {
         "Title": "The Sound of Music: The Musical",
         "Year": "2016",
-        "imdbRating": "N/A",
+        "imdbRating": "8.1",
         "Poster": "https://m.media-amazon.com/images/M/MV5BOTQ3NWI3YTItZjlkMy00MDUwLWIyN2MtMTEzMTQxNzBmMDc4XkEyXkFqcGdeQXVyMjkxNTE1MTQ@._V1_SX300.jpg",
         "movieId": 1035,
         "genres": "Musical|Romance"
@@ -1610,7 +1610,7 @@
     {
         "Title": "Dawn of the Abyss: The Spiritual Birth of Swamiji",
         "Year": "2016",
-        "imdbRating": "N/A",
+        "imdbRating": "7.8",
         "Poster": "https://m.media-amazon.com/images/M/MV5BMjM3YTUwYTgtMDQ0Ni00MWI4LWJmYWMtODNjZWFkZjc1MmVlXkEyXkFqcGdeQXVyODQ1MzAyMzU@._V1_SX300.jpg",
         "movieId": 1127,
         "genres": "Action|Adventure|Sci-Fi|Thriller"
@@ -1659,7 +1659,7 @@
         "Title": "The Princess Bride: The Untold Tales",
         "Year": "2007",
         "imdbRating": "7.5",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMjFiOTEyNGMtN2E4MC00ZjZlLTk3ZDQtNTU1ZGNiZTA1MzJlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         "movieId": 1197,
         "genres": "Action|Adventure|Comedy|Fantasy|Romance"
     },
@@ -1722,7 +1722,7 @@
     {
         "Title": "The Third Man: The Official Story of the Film",
         "Year": "2024",
-        "imdbRating": "N/A",
+        "imdbRating": "8.1",
         "Poster": "https://m.media-amazon.com/images/M/MV5BYjZmOGI0MGQtMmRmYi00NGYzLWFkYzYtZGIyYzQ1ZWNiYjMzXkEyXkFqcGdeQXVyODQ5NTE5Nw@@._V1_SX300.jpg",
         "movieId": 1212,
         "genres": "Film-Noir|Mystery|Thriller"
@@ -1856,10 +1856,10 @@
         "genres": "Comedy|Romance"
     },
     {
-        "Title": "Shining the Ball",
-        "Year": "2005",
+        "Title": "Monster's Ball",
+        "Year": "2001",
         "imdbRating": "4.3",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMjYxMTQxMzgtN2UyYS00Y2JkLTg1MmYtOTYwMGI4YWQxZDhmXkEyXkFqcGc@._V1_.jpg",
         "movieId": 1258,
         "genres": "Horror"
     },
@@ -1874,7 +1874,7 @@
     {
         "Title": "Evil Dead II: Dead by Dawn (1987)",
         "Year": "1987",
-        "imdbRating": "N/A",
+        "imdbRating": "7.7",
         "Poster": "https://m.media-amazon.com/images/M/MV5BZWI5NGE5Y2MtMmZjNi00N2U1LWI5MGQtNWQ1MDExYzlhZDc2XkEyXkFqcGdeQXVyMzAxMDI2MDA@._V1_SX300.jpg",
         "movieId": 1261,
         "genres": "Action|Comedy|Fantasy|Horror"
@@ -2794,8 +2794,8 @@
     {
         "Title": "The Dark Crystal: The Magic, Myth, and the Henson Legacy",
         "Year": "2018",
-        "imdbRating": "N/A",
-        "Poster": "N/A",
+        "imdbRating": "6.1",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BZjJkZjQ2ZTMtOGQ5MS00MTYyLWI2NzYtZTU0ZmZmZjRjNWNmXkEyXkFqcGc@._V1_.jpg",
         "movieId": 2140,
         "genres": "Adventure|Fantasy"
     },
@@ -2867,7 +2867,7 @@
         "Title": "The Untouchables: The Script, the Cast",
         "Year": "2004",
         "imdbRating": "6.2",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BYjVlNTk3NGYtOWE0OC00MDI4LThlZWItZGMwMTdmYzcwM2Y5XkEyXkFqcGc@._V1_UY1200_CR72,0,630,1200_AL_.jpg",
         "movieId": 2194,
         "genres": "Action|Crime|Drama"
     },
@@ -2898,8 +2898,8 @@
     {
         "Title": "I Love 'Say Anything...'",
         "Year": "2009",
-        "imdbRating": "N/A",
-        "Poster": "N/A",
+        "imdbRating": "3.9",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BNjY1N2QwZDItOWZjZC00MTg4LTg1YmUtZWMzMThhY2YxNmNiXkEyXkFqcGc@._V1_.jpg",
         "movieId": 2248,
         "genres": "Comedy|Drama|Romance"
     },
@@ -2923,14 +2923,14 @@
         "Title": "Next Big Thing: The 2 Skinnee J's Farewell Show",
         "Year": "2005",
         "imdbRating": "8.2",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BZGQ5Yzg4MjMtMzkyZC00YWViLWE0M2QtYTg3NGFkZWM0MzdjXkEyXkFqcGc@._V1_.jpg",
         "movieId": 2288,
         "genres": "Action|Horror|Sci-Fi|Thriller"
     },
     {
         "Title": "Perfect Player The Real Game Mauritius",
         "Year": "2014",
-        "imdbRating": "N/A",
+        "imdbRating": "7.3",
         "Poster": "https://m.media-amazon.com/images/M/MV5BMzRhNWI1ZWItNGVhNi00YjFmLWIzNDAtM2I4ZWFiYWQ3NjYxXkEyXkFqcGdeQXVyODcwNDYyMDI@._V1_SX300.jpg",
         "movieId": 2289,
         "genres": "Comedy|Crime|Drama"
@@ -3123,7 +3123,7 @@
         "Title": "The Matrix: The Movie Special",
         "Year": "1999",
         "imdbRating": "7.9",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMDMyNDIzYzMtZTMyMy00NjUyLWI3Y2MtYzYzOGE1NzQ1MTBiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         "movieId": 2571,
         "genres": "Action|Sci-Fi|Thriller"
     },
@@ -3250,8 +3250,8 @@
     {
         "Title": "The Blair Witch Project: The Black Hills",
         "Year": "2020",
-        "imdbRating": "N/A",
-        "Poster": "N/A",
+        "imdbRating": "6.5",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BNGFmYzA5NzktOTc1Ni00YTIxLWJiZTEtNmEyZjBjNDM2MjRlXkEyXkFqcGc@._V1_.jpg",
         "movieId": 2710,
         "genres": "Drama|Horror|Thriller"
     },
@@ -3296,10 +3296,10 @@
         "genres": "Comedy|Horror|Musical"
     },
     {
-        "Title": "The Sixth Sense: The Actors",
+        "Title": "The Sixth Sense",
         "Year": "2000",
         "imdbRating": "6.8",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BOWFkZDEzODYtYzQxNy00MzdjLTg4ODUtNGNkN2U5MDFkZWE3XkEyXkFqcGc@._V1_QL75_UX820_.jpg",
         "movieId": 2762,
         "genres": "Drama|Horror|Mystery"
     },
@@ -3331,7 +3331,7 @@
         "Title": "Inside Story: National Lampoon's Vacation",
         "Year": "2011",
         "imdbRating": "7.6",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMTQwZmVkMGUtMWEzNi00N2MzLThkMDItZDI2YjJiYzMxZDEzXkEyXkFqcGc@._V1_QL75_UX140_CR0,2,140,207_.jpg",
         "movieId": 2795,
         "genres": "Comedy"
     },
@@ -3466,8 +3466,8 @@
     {
         "Title": "Y'all Seen That? Animapril Episode 4 - Who Framed Roger Rabbit? (1988)",
         "Year": "1988",
-        "imdbRating": "N/A",
-        "Poster": "N/A",
+        "imdbRating": "7.7",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BNWRjYTBlMTktMzNhOS00YjUyLTkyYjUtYzlhNzZiOWNhODFhXkEyXkFqcGc@._V1_.jpg",
         "movieId": 2987,
         "genres": "Adventure|Animation|Children|Comedy|Crime|Fantasy|Mystery"
     },
@@ -3547,7 +3547,7 @@
         "Title": "The World Is Not Enough: The Hong Kong Press Conference",
         "Year": "2006",
         "imdbRating": "5.9",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMDlmNTA0YmMtODJmMi00NTZhLTk4MzUtY2FiYjNhMmY4OTI1XkEyXkFqcGc@._V1_QL75_UX190_CR0,0,190,281_.jpg",
         "movieId": 3082,
         "genres": "Action|Adventure|Thriller"
     },
@@ -3571,7 +3571,7 @@
         "Title": "The Cider House Rules: The Making of an American Classic",
         "Year": "1999",
         "imdbRating": "5.6",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BYWZlYzMyNzMtNjhlMy00ZTAzLWEwMTMtY2YwNzAxMDk1ZTViXkEyXkFqcGc@._V1_.jpg",
         "movieId": 3148,
         "genres": "Drama"
     },
@@ -3746,7 +3746,7 @@
     {
         "Title": "Animal House",
         "Year": "2021",
-        "imdbRating": "N/A",
+        "imdbRating": "6.1",
         "Poster": "https://m.media-amazon.com/images/M/MV5BNTY4ODk0YzQtNjM3MS00OGUxLTk3ZjAtNGZkMGJhOGM0YWRmXkEyXkFqcGc@._V1_SX300.jpg",
         "movieId": 3421,
         "genres": "Comedy"
@@ -3914,8 +3914,8 @@
     {
         "Title": "WhoMadeWho: Running Man/The Sun",
         "Year": "2012",
-        "imdbRating": "N/A",
-        "Poster": "N/A",
+        "imdbRating": "6.5",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMDQwYzMwMDItYzFhZC00YjkzLTlmODAtMzg3NDFlNDhhZjYzXkEyXkFqcGc@._V1_.jpg",
         "movieId": 3698,
         "genres": "Action|Sci-Fi"
     },
@@ -3970,7 +3970,7 @@
     {
         "Title": "The Return of the American Patriot: The Rise of Pennsylvania",
         "Year": "2022",
-        "imdbRating": "N/A",
+        "imdbRating": "7.2",
         "Poster": "https://m.media-amazon.com/images/M/MV5BMDg0YWZhMDItY2Y3ZC00MzMxLWFlZTgtZjAyZGZjZTEzMTU1XkEyXkFqcGdeQXVyNzExMzc0MDg@._V1_SX300.jpg",
         "movieId": 3753,
         "genres": "Action|Drama|War"
@@ -4555,7 +4555,7 @@
         "Title": "The Bourne Identity: The Birth of 'The Bourne Identity'",
         "Year": "2002",
         "imdbRating": "7.2",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BM2JkNGU0ZGMtZjVjNS00NjgyLWEyOWYtZmRmZGQyN2IxZjA2XkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_QL75_UX140_CR0,1,140,207_.jpg",
         "movieId": 5418,
         "genres": "Action|Mystery|Thriller"
     },
@@ -4658,7 +4658,7 @@
     {
         "Title": "Adaptation",
         "Year": "2023",
-        "imdbRating": "N/A",
+        "imdbRating": "8.3",
         "Poster": "https://m.media-amazon.com/images/M/MV5BNGM0MjhkMjctZWQ0MS00MjNhLTllOTMtOWQyOTQ1NjU0NDczXkEyXkFqcGdeQXVyMjg0NzU0ODQ@._V1_SX300.jpg",
         "movieId": 5902,
         "genres": "Comedy|Drama|Romance"
@@ -5043,7 +5043,7 @@
         "Title": "The Bourne Supremacy: The Bourne Mastermind (Part 2)",
         "Year": "2004",
         "imdbRating": "6.6",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BZTU4ZDgyYjgtODA0Mi00MmE3LTgzYWQtZjc1YTFiMTczZTQ3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         "movieId": 8665,
         "genres": "Action|Crime|Thriller"
     },
@@ -5162,8 +5162,8 @@
     {
         "Title": "The American Aviator: The Howard Hughes Story",
         "Year": "2006",
-        "imdbRating": "N/A",
-        "Poster": "N/A",
+        "imdbRating": "7.5",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BYTUyYWJlNDgtOTM5Ny00YTQ3LWFmYTgtZjJiNTNkYjJlMmY4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         "movieId": 30812,
         "genres": "Drama"
     },
@@ -5403,7 +5403,7 @@
         "Title": "The Da Vinci Code: The Da Vinci Props",
         "Year": "2006",
         "imdbRating": "5.8",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMjIxMjQyMTc3Nl5BMl5BanBnXkFtZTcwMTA1MDUzMw@@._V1_FMjpg_UX1000_.jpg",
         "movieId": 45447,
         "genres": "Drama|Mystery|Thriller"
     },
@@ -5467,7 +5467,7 @@
         "Title": "The Departed: The Inspiration",
         "Year": "2007",
         "imdbRating": "8.5",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMGYzYmE4MjMtMTk0NC00NmQ1LWJmMzctZmI1NzRhMjZmYzIwXkEyXkFqcGc@._V1_.jpg",
         "movieId": 48516,
         "genres": "Crime|Drama|Thriller"
     },
@@ -5482,8 +5482,8 @@
     {
         "Title": "Massacre for Prestige: The Hidden Worlds of Power",
         "Year": "1974",
-        "imdbRating": "N/A",
-        "Poster": "N/A",
+        "imdbRating": "4.2",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMjA4NDI0MTIxNF5BMl5BanBnXkFtZTYwNTM0MzY2._V1_.jpg",
         "movieId": 48780,
         "genres": "Drama|Mystery|Sci-Fi|Thriller"
     },
@@ -5619,7 +5619,7 @@
         "Title": "The Bourne Ultimatum: The Evolution of Nicky",
         "Year": "2007",
         "imdbRating": "7.7",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BYzE3ZGM4MzctZjU5MC00NWE2LTg5ZjYtMDFiM2ZlMWQ1MjkwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         "movieId": 54286,
         "genres": "Action|Crime|Thriller"
     },
@@ -5763,7 +5763,7 @@
         "Title": "The Incredible Hulk: The Hulk That Wasn't There",
         "Year": "2008",
         "imdbRating": "7.1",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMTUyNzk3MjA1OF5BMl5BanBnXkFtZTcwMTE1Njg2MQ@@._V1_FMjpg_UX1000_.jpg",
         "movieId": 60040,
         "genres": "Action|Sci-Fi"
     },
@@ -5915,7 +5915,7 @@
         "Title": "Not a Love Story: Making (500) Days of Summer",
         "Year": "2009",
         "imdbRating": "7.7",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMTk5MjM4OTU1OV5BMl5BanBnXkFtZTcwODkzNDIzMw@@._V1_FMjpg_UX1000_.jpg",
         "movieId": 69757,
         "genres": "Comedy|Drama|Romance"
     },
@@ -6187,7 +6187,7 @@
         "Title": "Intouchables",
         "Year": "2016",
         "imdbRating": "8.1",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BODY0MDM1MDE2OV5BMl5BanBnXkFtZTcwMzEyMjkyNw@@._V1_.jpg",
         "movieId": 92259,
         "genres": "Comedy|Drama"
     },
@@ -6267,7 +6267,7 @@
         "Title": "The Hobbit: An Unexpected Journey - The Company of Thorin",
         "Year": "2013",
         "imdbRating": "8.4",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_FMjpg_UX1000_.jpg",
         "movieId": 98809,
         "genres": "Adventure|Fantasy|IMAX"
     },
@@ -6315,7 +6315,7 @@
         "Title": "The Hobbit: The Desolation of Smaug - The Peoples and Denizens of Middle-earth",
         "Year": "2014",
         "imdbRating": "7.9",
-        "Poster": "N/A",
+        "Poster": "https://m.media-amazon.com/images/M/MV5BMzU0NDY0NDEzNV5BMl5BanBnXkFtZTgwOTIxNDU1MDE@._V1_QL75_UY281_CR0,0,190,281_.jpg",
         "movieId": 106489,
         "genres": "Adventure|Fantasy|IMAX"
     },
