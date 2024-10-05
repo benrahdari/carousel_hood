@@ -141,38 +141,37 @@
 
 
 <!-- Carousel From here -->
-        {% if recommendation_type == 'carousel' %}
-         {% set outer_loop = loop %}
-        <div class="container my-4">
-            {% for genre, genre_movies in recommendations.items() %}
-            <h2 class="mt-4 mb-0">{{ genre }} Movies</h2>
-            <hr class="my-0 py-0 w-100 mx-auto">
-            <div class="slick-carousel" data-row-position="{{ loop.index0 }}">
-                {% for movie in genre_movies %}
-                <div class="movie-item" data-movie-id="{{ movie.movieId }}" data-col-position="{{ loop.index0 }}" data-row-position="{{ outer_loop.index0 }}" data-genre="{{ movie.genres }}" >
-                    <form action="{{ url_for('click') }}" method="POST" class="text-center">
-                        <input type="hidden" name="movieId" value="{{ movie.movieId }}">
-                        <div style="max-inline-size: fit-content;">
-                            <img src="{{ movie.Poster }}" alt="{{ movie.Title }}"
-                                class="img-fluid rounded mx-auto w-100" style="width:150px!important; height:225px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-                            <p class="mx-auto w-75 mt-1 movie-title">{{ movie.Title }}</p>
-                            <button type="submit" class="btn btn-sm btn-success btn-select d-none">Select this movie</button>
+{% if recommendation_type == 'carousel' %}
+    <div class="container my-4">
+        {% for genre, genre_movies in recommendations.items() %}
+        {% set outer_loop = loop %}  <!-- Move this line inside the main loop -->
+        <h2 class="mt-4 mb-0">{{ genre }} Movies</h2>
+        <hr class="my-0 py-0 w-100 mx-auto">
+        <div class="slick-carousel" data-row-position="{{ outer_loop.index0 }}">
+            {% for movie in genre_movies %}
+            <div class="movie-item" data-movie-id="{{ movie.movieId }}" data-col-position="{{ loop.index0 }}" data-row-position="{{ outer_loop.index0 }}" data-genre="{{ movie.genres }}">
+                <form action="{{ url_for('click') }}" method="POST" class="text-center">
+                    <input type="hidden" name="movieId" value="{{ movie.movieId }}">
+                    <div style="max-inline-size: fit-content;">
+                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }}"
+                            class="img-fluid rounded mx-auto w-100" style="width:150px!important; height:225px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                        <p class="mx-auto w-75 mt-1 movie-title">{{ movie.Title }}</p>
+                        <button type="submit" class="btn btn-sm btn-success btn-select d-none">Select this movie</button>
 
-                            <button type="button" class="btn btn-sm btn-outline-secondary btn-more d-none"
+                        <button type="button" class="btn btn-sm btn-outline-secondary btn-more d-none"
                             data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top"
                             title="Movie Information"
                             data-bs-content="Rating: {{ movie.imdbRating }}/10<br>Genres: {{ movie.genres }}<br>Year: {{ movie.Year }}">
                             Show Movie Info
                         </button>
-
-                        </div>
-                    </form>
-                </div>
-                {% endfor %}
+                    </div>
+                </form>
             </div>
             {% endfor %}
         </div>
-    <!-- To here -->
+        {% endfor %}
+    </div>
+<!-- To here -->
 
     <!-- List From here -->
 {% elif recommendation_type == 'list' %}
