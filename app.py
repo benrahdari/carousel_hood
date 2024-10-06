@@ -10,6 +10,7 @@ from spotlight.evaluation import rmse_score
 import json
 import os
 from flask_wtf import CSRFProtect
+from datetime import datetime
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -288,8 +289,8 @@ def landing_page():
         type_param = request.args.get('type', 'adaptive')          # 'adaptive' or 'control'
         baseline_param = request.args.get('baseline', 'popularity')  # 'random' or 'popularity'
         ui_param = request.args.get('ui', 'carousel')             # 'carousel' or 'list'
-        mouse_logging_param = request.args.get('mouse_logging', 'false')
-        mouse_logging_freq_param = request.args.get('mouse_logging_freq', '500')  # Default 500ms
+        mouse_logging_param = request.args.get('mouse_logging', 'true')
+        mouse_logging_freq_param = request.args.get('mouse_logging_freq', '1000')  # Default 500ms
 
         # Set session parameters
         session['parameters'] = {
@@ -297,7 +298,7 @@ def landing_page():
             'baseline': baseline_param,
             'ui': ui_param,
             'mouse_logging': mouse_logging_param.lower() == 'true',
-            'mouse_logging_freq': int(mouse_logging_freq_param)
+            'mouse_logging_freq': int(mouse_logging_freq_param),
         }
 
     params = session['parameters']
@@ -467,12 +468,13 @@ def submit_data():
         print("No data received")
         return jsonify({"message": "No data received"}), 400
 
+    current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
     user_id = data.get('user_id')
     folder = 'experiment_data/'  
     # Ensure the folder exists
     os.makedirs(folder, exist_ok=True)
     # Save the data to a JSON file
-    filename = os.path.join(folder, f'{user_id}.json')
+    filename = os.path.join(folder, f'{user_id}_{current_time}.json')
     with open(filename, 'w') as file:
         json.dump(data, file)
     # Return a response

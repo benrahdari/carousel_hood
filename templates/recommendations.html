@@ -18,6 +18,13 @@
    
     <style>
 
+        #confirmEnter {
+            pointer-events: auto;
+            opacity: 1;
+            z-index: 1;
+            display: inline-block;
+        }
+
         .header {
             background-color: #00000030;
             padding: 10px 20px;
@@ -104,7 +111,7 @@
         <div class="header-left">
             <p class="mb-0 text-secondary"><strong>Current Round: </strong><span id="currentround"> ... </span>/10</p>
             <p class="mb-2 text-secondary"><strong>Current Task: </strong><span id="currenttask"> ... </span></p>
-            <a class="btn btn-sm btn-secondary"  onclick="showtaskdesc();">View Full Task</a>
+            <a id="opneInstruction" class="opneInstruction link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"  onclick="showtaskdesc();">Open instructions page</a>
         </div>
         <div class="header-right">
             <div class="row">
@@ -120,6 +127,37 @@
         </div>
     </header>
 
+    <!-- Modal intro -->
+    <div class="modal fade" id="intro" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    
+                    <h5 class="px-2">Task Description<br>
+                        <span class="small fw-light p-0 m-0">Please follow the instructions to complete the task.</span>
+                    </h5>
+                    <div class="border border-4 p-2 m-2 bg-ligh">
+                        <p> You have a chance to win a movie on your streaming service of choice. In each round, you will be presented with a set of movies. Select the movie you most want to have. You have 20 seconds to browse and 10 seconds to decide. There are 10 rounds so this takes around 3-4 minutes. Your selections help determine if you win, but even if you don’t, you’ll still get a code at the end to get paid for your time.  </p>
+                    </div>
+                    <form>
+                        <div class="mb-3 form-check form-switch">
+                            <input id="confirmEnter" name="confirm_enter" class="form-check-input consent" type="checkbox">
+                            <label class="form-check-label" for="confirmEnter"><small>I understand the task and agree to the 
+                                    <a id="participant_agreement" href="http://54.193.217.145/iui2024/assets/consent.pdf" target="_blank"><abbr
+                                            title="click for complete terms and conditions">Participation Agreement</abbr>.</a></small> </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="start" name="start_experiment" type="button" class="startExperiment btn btn-success">Start Now</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+
 <!-- Modal Template -->
 <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -132,20 +170,18 @@
                 Modal content goes here...
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="DynamicModalButton" type="button" class="DynamicModalClose btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-
-
 
 <!-- Carousel From here -->
 {% if recommendation_type == 'carousel' %}
     <div class="container my-4">
         {% for genre, genre_movies in recommendations.items() %}
         {% set outer_loop = loop %}  <!-- Move this line inside the main loop -->
-        <h2 class="mt-4 mb-0">{{ genre }} Movies</h2>
+        <h2 class="carouselHeader mt-4 mb-0">{{ genre }} Movies</h2>
         <hr class="my-0 py-0 w-100 mx-auto">
         <div class="slick-carousel" data-row-position="{{ outer_loop.index0 }}">
             {% for movie in genre_movies %}
@@ -154,11 +190,11 @@
                     <input type="hidden" name="movieId" value="{{ movie.movieId }}">
                     <div style="max-inline-size: fit-content;">
                         <img src="{{ movie.Poster }}" alt="{{ movie.Title }}"
-                            class="img-fluid rounded mx-auto w-100" style="width:150px!important; height:225px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                            class="carousel_image img-fluid rounded mx-auto w-100" style="width:150px!important; height:225px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                         <p class="mx-auto w-75 mt-1 movie-title">{{ movie.Title }}</p>
-                        <button type="submit" class="btn btn-sm btn-success btn-select d-none">Select this movie</button>
+                        <button id="selectthismovie" type="submit" class="selectthismovie btn btn-sm btn-success btn-select d-none">Select this movie</button>
 
-                        <button type="button" class="btn btn-sm btn-outline-secondary btn-more d-none"
+                        <button type="button" class="AskpopoverCarousel btn btn-sm btn-outline-secondary btn-more d-none"
                             data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top"
                             title="Movie Information"
                             data-bs-content="Rating: {{ movie.imdbRating }}/10<br>Genres: {{ movie.genres }}<br>Year: {{ movie.Year }}">
@@ -182,13 +218,13 @@
             <div class="card h-100 shadow-sm">
                 <div class="row g-0">
                     <div class="col-md-2">
-                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }} Poster" class="img-fluid rounded-start" style="object-fit: cover; width:150px!important;">
+                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }} Poster" class="list_image img-fluid rounded-start" style="object-fit: cover; width:150px!important;">
                     </div>
                     <div class="col-md-10">
                         <div class="card-body d-flex flex-column justify-content-between" data-row-position="{{ loop.index0 }}">
                             <div>
                                
-                                <h5 class="card-title">{{ movie.Title }}</h5>
+                                <h5 class="list_movie_title card-title">{{ movie.Title }}</h5>
                                 
                                 <p class="card-text mt-2">{{ movie.description|truncate(100) }}</p>
                             </div>
@@ -196,14 +232,12 @@
                             <form action="{{ url_for('click') }}" method="POST" class="mt-3">
                                 <input type="hidden" name="movieId" value="{{ movie.movieId }}">
                                 <button type="submit" class="btn btn-sm btn-success btn-select d-none">Select this movie</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary btn-more d-none"
-    data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top"
+                                <button type="button" class="AskpopoverList btn btn-sm btn-outline-secondary btn-more d-none"
+    data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="right"
     title="Movie Information"
     data-bs-content="Rating: {{ movie.imdbRating }}/10<br>Genres: {{ movie.genres }}<br>Year: {{ movie.Year }}">
     Show Movie Info
 </button>
-
-
                             </form>
                         </div>
                         </div>
@@ -231,11 +265,14 @@
     <!-- Interaction Logging Script -->
     <script>
 
-
-        
+        $(window).on('load', function() {
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                window.location.href = "http://54.193.217.145/iui2024/mobile.html";
+            }
+           });
         
         // Function to show a modal with dynamic content
-const showModal = (title, content, className, dismissible) => {
+const showModal = (title, content, className, dismissible, button_text='Ok') => {
     // Update modal title and content
     $('#dynamicModalLabel').text(title);
     $('.modal-body').html(content);
@@ -250,15 +287,18 @@ const showModal = (title, content, className, dismissible) => {
     } else {
         $('#dynamicModal').modal({ backdrop: 'static', keyboard: false });
     }
+
+    if(button_text != 'Ok'){
+        $('#dynamicModal').text(button_text);
+    }
+
     // Show the modal
     $('#dynamicModal').modal('show');
 };
 
-
 function showtaskdesc(){
     showModal("Task description", "You have a chance to win a movie on your streaming service of choice. In each round, you will be presented with a set of movies. Select the movie you most want to have. You have 20 seconds to browse and 10 seconds to decide. There are 10 rounds so this takes around 3-4 minutes. Your selections help determine if you win, but even if you don’t, you’ll still get a code at the end to get paid for your time.", "bg-primary", false);
 }
-
 
         // Initialize variables using Flask context
         let iteration = {{iteration}};
@@ -300,6 +340,9 @@ function showtaskdesc(){
                 draggable: false
             });
 
+           // let recommendations = {{recommendations | tojson}};
+
+
                 // Update the phase and display every second
 intloop = setInterval(() => {
     if (!isTimerPaused) {  // Only update if the timer is not paused
@@ -310,9 +353,52 @@ intloop = setInterval(() => {
          
         });
 
+        $("#start").on("click", function () {
+            if ($('#confirmEnter').is(':checked')) {
+                $('#intro').modal('hide');
+            } else {
+                $('#confirmEnter').css('border-color', 'red');
+                $('#confirmEnter').focus();
+            }
+        });
+
+            // Test checkbox behavior:
+$("#confirmEnter").on("click", function () {
+    if ($(this).is(':checked')) {
+        console.log("Checkbox is checked");
+    } else {
+        console.log("Checkbox is unchecked");
+    }
+});
+
+            $("#start").on("click", function () {
+                if ($('#confirmEnter').is(':checked')) {
+                    $('#intro').modal('hide');
+                } else {
+                    $('#confirmEnter').css('border-color', 'red');
+                    $('#confirmEnter').focus();
+                }
+            });
+
+                // Test checkbox behavior:
+    $("#confirmEnter").on("click", function () {
+        if ($(this).is(':checked')) {
+            console.log("Checkbox is checked");
+        } else {
+            console.log("Checkbox is unchecked");
+        }
+    });
+
+    document.getElementById('intro').addEventListener('click', function(event) {
+        event.stopPropagation();  // Prevents this checkbox from triggering other actions
+    });
+
         // Combined event listener for click logging and phase management
         document.addEventListener('click', (e) => {
+            let orig_target_id = e.target.id; 
+            let orig_target_className = e.target.className
             let target = e.target.closest('.movie-item');
+
             console.log('Click detected', target);  // Log when a click is detected
 
             let movieId = 'not_set';
@@ -322,6 +408,7 @@ intloop = setInterval(() => {
             let selected_item = false;
             let list_position = 0;
             click_on_movie = false;
+
 
             if (phase === 'browsing') {
                 e.preventDefault();
@@ -352,6 +439,8 @@ intloop = setInterval(() => {
                 x: e.clientX,
                 y: e.clientY,
                 click_on_movie: click_on_movie,
+                orig_target_id: orig_target_id,
+                orig_target_className: orig_target_className
             });
 
             const data = {
@@ -362,7 +451,14 @@ intloop = setInterval(() => {
             end_time: new Date().toISOString()
                 };
 
-        sendData();  // Send data to the server
+                if(orig_target_id == 'selectthismovie'){
+                    //alert("submitting data");
+                    sendData();
+                }
+        //sendData();  // Send data to the server
+
+
+
         });
 
         // Mouse Movement Logging Script
@@ -378,11 +474,13 @@ intloop = setInterval(() => {
                 lastMouseY = e.clientY;
             });
 
+            document.addEventListener('scroll', () => logEvent('scroll', {scrollX: window.scrollX, scrollY: window.scrollY}));
+            document.addEventListener('keydown', (e) => logEvent('keydown', {key: e.key}));
+
             setInterval(() => {
                 logEvent('mousemove', {x: lastMouseX, y: lastMouseY});
             }, mouseLoggingFrequency);
         }
-
 
        // Phase Management Script
 phase = 'browsing'; // 'browsing' or 'decision'
@@ -391,11 +489,28 @@ let phaseDuration = 20000; // 20 seconds for browsing
 let isTimerPaused = false;
 let pauseStartTime = null; // Time when the modal is opened
 let totalPauseDuration = 0; // Total time spent while modal is open
-
 // Function to update the phase
 const updatePhase = () => {
     let elapsedTime = new Date() - phaseStartTime - totalPauseDuration; // Subtract total pause duration
 if (phase === 'browsing'){
+
+
+            // Initialize interactionLog if it doesn't already exist
+            if (!localStorage.getItem('consent_confirm')) {
+                localStorage.setItem('consent_confirm', 'false');  // Initialize as an empty array
+            }
+    
+            // Retrieve the interactionLog from localStorage
+            let consent = localStorage.getItem('consent_confirm');
+
+    
+
+    if(consent == 'false'){
+        console.log("Showing intro");
+        $('#intro').modal('show');
+        phaseStartTime =  new Date();
+        localStorage.setItem('consent_confirm','true');
+    }
 
     $('.btn-more').removeClass('d-none');
     $('.btn-select').hide();
@@ -418,7 +533,7 @@ if (phase === 'browsing' && elapsedTime >= 20000) {
 
         // Show a modal indicating entering decision phase
         showModal('Time\'s up', 'You are entering the decision making phase. Please select the movie YOU WANT THE MOST within in next 10 seconds.', 'bg-success text-white', true);
-
+        $("html, body").animate({scrollTop: 0}, 500);
     } else if (phase === 'decision' && elapsedTime >= 10000) {
         // Decision phase over
         if (iteration <= 10) {  
@@ -429,8 +544,6 @@ if (phase === 'browsing' && elapsedTime >= 20000) {
                 document.getElementById('next-iteration-form').submit();
                 return;
             }
-        }else{
-            showModal('compeleted', 'Thank you. The experiment has concluded. Here is your code: AABB1232', 'bg-success text-white', true);
         }
     }
 };
@@ -493,6 +606,21 @@ $('#dynamicModal').on('hidden.bs.modal', function () {
     isTimerPaused = false;
 });
 
+// Event listeners for modal show/hide to track pause time
+$('#intro').on('shown.bs.modal', function () {
+    pauseStartTime = new Date();  // Set the time when the modal was shown
+    isTimerPaused = true;
+});
+
+$('#intro').on('hidden.bs.modal', function () {
+    if (pauseStartTime) {
+        // Calculate the time the modal was open and add it to totalPauseDuration
+        totalPauseDuration += new Date() - pauseStartTime;
+        pauseStartTime = null;  // Reset the pause start time
+    }
+    isTimerPaused = false;
+});
+
         // Data Submission Script
         const sendData = () => {
             // Prepare data
@@ -501,7 +629,8 @@ $('#dynamicModal').on('hidden.bs.modal', function () {
             interactions: interactionLog,
             session_parameters: {{current_parameters | tojson }},
             start_time: sessionStartTime,
-            end_time: new Date().toISOString()
+            end_time: new Date().toISOString(),
+            recommendations: {{recommendations| tojson}}
             };
 
         console.log('Sending data:', data);  // Log data before sending
@@ -540,6 +669,18 @@ $('#dynamicModal').on('hidden.bs.modal', function () {
         });
         
         $('#dynamicModal').on('hidden.bs.modal', function () {
+            // Resume the timer when the modal is closed
+            console.log('time restarts');
+            isTimerPaused = false;
+        });
+
+        $('#intro').on('shown.bs.modal', function () {
+            // Pause the timer when the modal is shown
+            console.log('time is paused');
+            isTimerPaused = true;
+        });
+        
+        $('#intro').on('hidden.bs.modal', function () {
             // Resume the timer when the modal is closed
             console.log('time restarts');
             isTimerPaused = false;
