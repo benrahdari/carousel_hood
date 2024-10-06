@@ -414,6 +414,8 @@ $("#confirmEnter").on("click", function () {
                 e.preventDefault();
                 console.log('Click blocked during browsing phase');
                 currentphase = 'browsing'
+
+
             } else {
                 currentphase = 'deciding';
             }
@@ -453,11 +455,10 @@ $("#confirmEnter").on("click", function () {
 
                 if(orig_target_id == 'selectthismovie'){
                     //alert("submitting data");
+                    localStorage.setItem('welcome', 'false');
                     sendData();
                 }
         //sendData();  // Send data to the server
-
-
 
         });
 
@@ -489,12 +490,20 @@ let phaseDuration = 20000; // 20 seconds for browsing
 let isTimerPaused = false;
 let pauseStartTime = null; // Time when the modal is opened
 let totalPauseDuration = 0; // Total time spent while modal is open
+localStorage.setItem('welcome', 'false');
 // Function to update the phase
 const updatePhase = () => {
+    
     let elapsedTime = new Date() - phaseStartTime - totalPauseDuration; // Subtract total pause duration
 if (phase === 'browsing'){
 
+ let welcome = localStorage.getItem('welcome');
 
+
+    if(iteration > 1 &&  welcome == 'false'){
+        showModal('Thank you', 'Thank you for submitting your choice. Click ok to start the browsing task for round '+{{iteration}}, 'bg-success text-white', true);
+        localStorage.setItem('welcome', 'true');
+    }
             // Initialize interactionLog if it doesn't already exist
             if (!localStorage.getItem('consent_confirm')) {
                 localStorage.setItem('consent_confirm', 'false');  // Initialize as an empty array
@@ -502,8 +511,6 @@ if (phase === 'browsing'){
     
             // Retrieve the interactionLog from localStorage
             let consent = localStorage.getItem('consent_confirm');
-
-    
 
     if(consent == 'false'){
         console.log("Showing intro");
