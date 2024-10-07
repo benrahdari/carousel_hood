@@ -280,6 +280,10 @@ import random
 import string
 
 
+def generate_user_id():
+    """Generates a user ID with the format: one digit - three letters - four digits."""
+    return ''.join(random.choices(string.digits[1:], k=8))
+
 # Landing page route
 @app.route('/study', methods=['GET'])
 @csrf.exempt
@@ -312,7 +316,7 @@ def landing_page():
         session['iteration'] = 1
         session['clicked_items'] = []
         # Generate a new user_id
-        user_id = ''.join(random.choices(string.digits, k=6))
+        user_id = generate_user_id()
         session['user_id'] = user_id
         # Initialize item_scores based on baseline
         num_items = 500
@@ -468,13 +472,12 @@ def submit_data():
         print("No data received")
         return jsonify({"message": "No data received"}), 400
 
-    current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
     user_id = data.get('user_id')
     folder = 'experiment_data/'  
     # Ensure the folder exists
     os.makedirs(folder, exist_ok=True)
     # Save the data to a JSON file
-    filename = os.path.join(folder, f'{user_id}_{current_time}.json')
+    filename = os.path.join(folder, f'{user_id}.json')
     with open(filename, 'w') as file:
         json.dump(data, file)
     # Return a response

@@ -18,33 +18,24 @@
    
     <style>
 
+
         #confirmEnter {
             pointer-events: auto;
             opacity: 1;
             z-index: 1;
             display: inline-block;
         }
-
+ 
         .header {
-            background-color: #00000030;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ccc;
+            padding: 5px 5px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: stretch; 
+            border-bottom: 1px solid #cccccc85; 
+            flex-direction: column; 
+            flex-wrap: nowrap;
         }
 
-        .header-left {
-            flex: 1;
-        }
-
-        .header-right {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            flex: 1;
-            flex-direction: column-reverse;
-        }
 
         .container-content {
             padding: 20px;
@@ -107,48 +98,101 @@
 </head>
 
 <body id="main">
-    <header class="header sticky-top">
-        <div class="header-left">
-            <p class="mb-0 text-secondary"><strong>Current Round: </strong><span id="currentround"> ... </span>/10</p>
-            <p class="mb-2 text-secondary"><strong>Current Task: </strong><span id="currenttask"> ... </span></p>
-            <a id="opneInstruction" class="opneInstruction link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"  onclick="showtaskdesc();">Open instructions page</a>
-        </div>
-        <div class="header-right">
-            <div class="row">
-            <div class="d-flex col-4 p-2 m-1 bg-primary text-white rounded" style="flex-direction:column; justify-content: center; ">
-                <p class="small my-1">Current Task</p>
-                <p class="my-1 fs-4" id="phase-name">Browsing</p>
+    <header class="header container sticky-top">
+        <div class="row" style="flex-wrap: nowrap;">
+            <div class="d-flex col-6 p-2 m-1 bg-primary text-white rounded header-left" style="flex-direction:column; justify-content: center; ">
+                <p class="small my-1">Current Round <span id="currentround"> ... </span>/10</p>
+                <p class="my-1 fs-4" id="phase-name"> Browsing </p>
+                <span class="small fw-ligh" id="currenttask"> ... </span>
             </div>
-            <div class=" d-flex col-4 p-2 m-1 bg-secondary text-white rounded" style="flex-direction:column; justify-content: center; ">
-                <p class="small my-1" >Remaining time</p>
+            <div class=" d-flex col-6 p-2 m-1 bg-secondary text-white rounded header-right" style="flex-direction:column; justify-content: center; ">
+                <p class="small my-1" >Remaining time in this round</p>
                 <p class="my-1 fs-4" id="time-remaining">20 seconds</p>
+                <a id="opneInstruction" class="opneInstruction link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover text-end text-light small py-2" role="button">Open instructions page</a>
             </div>
-        </div>
         </div>
     </header>
 
     <!-- Modal intro -->
     <div class="modal fade" id="intro" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
-
                 <div class="modal-body">
-                    
-                    <h5 class="px-2">Task Description<br>
-                        <span class="small fw-light p-0 m-0">Please follow the instructions to complete the task.</span>
-                    </h5>
-                    <div class="border border-4 p-2 m-2 bg-ligh">
-                        <p> You have a chance to win a movie on your streaming service of choice. In each round, you will be presented with a set of movies. Select the movie you most want to have. You have 20 seconds to browse and 10 seconds to decide. There are 10 rounds so this takes around 3-4 minutes. Your selections help determine if you win, but even if you don’t, you’ll still get a code at the end to get paid for your time.  </p>
-                    </div>
-                    <form>
-                        <div class="mb-3 form-check form-switch">
-                            <input id="confirmEnter" name="confirm_enter" class="form-check-input consent" type="checkbox">
-                            <label class="form-check-label" for="confirmEnter"><small>I understand the task and agree to the 
-                                    <a id="participant_agreement" href="http://54.193.217.145/iui2024/assets/consent.pdf" target="_blank"><abbr
-                                            title="click for complete terms and conditions">Participation Agreement</abbr>.</a></small> </label>
+                    <div class="container">
+                        <!-- Task Title -->
+                        <div class="text-center mb-4">
+                            <h4>🎬 Movie Selection Task 🎬</h4>
+                            <p class="text-muted small">Follow the instructions below to complete the task and have a chance to win a movie on your streaming service! (~8.00$ USD)</p>
+                            <p class="text-dark fs-6 bg-warning rounded p-2 m-2 text-start ">To complete this study, please use a <strong class="text-danger">Computer</strong> with <strong class="text-danger">Google Chrome</strong> or <strong class="text-danger">Opera</strong> web browser. Other browsers, like Safari and Firefox, won’t work. </p>
                         </div>
-                    </form>
+    
+                        <!-- Overview Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5>Overview</h5>
+                                <p class="m-1">This task consists of 10 rounds, each divided into two phases: <strong>Browsing</strong> and <strong>Decision</strong>. In each round, you'll be presented with a set of movies. Your goal is to select the movie (Click on green "Select this movie" button when it appears) you want the most in each round.</p>
+                            </div>
+                        </div>
+    
+                        <!-- Phases Description with Images -->
+                        <div class="row text-center mb-4">
+                            <!-- Browsing Phase -->
+                            <div class="col-md-6">
+                                <div class="card p-2 ">
+                                    
+                                    <h5 class="text-primary">Browsing Phase</h5>
+                                    <img src="http://54.219.255.236/static/assets/decide.png" alt="Decision Phase" class="img-fluid rounded">
+                                    <p class="m-1 text-start">You have <strong>20 seconds</strong> to browse the list of movies and check out their details.</p>  
+                                </div>
+                            </div>
+    
+                            <!-- Decision Phase -->
+                            <div class="col-md-6">
+                                <div class="card p-2 shadow-sm">
+                                    
+                                    <h5 class="text-danger">Decision Phase</h5>
+                                    <img src="http://54.219.255.236/static/assets/browse.png" alt="Browsing Phase" class="img-fluid rounded">
+                                    <p class="m-1 text-start">After browsing, you have <strong>10 seconds</strong> to select the movie you want the most.</p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Task Duration -->
+
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5>Task Duration</h5>
+                                <p class="m-1">The entire task takes approximately <strong>5-6 minutes</strong> to complete. You will be guided through the experiment step by step.</p>
+                            </div>
+                        </div>
+
+    
+                        <!-- Rewards -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h5>Rewards</h5>
+                                <p class="m-1">Your selections influence your chances of winning. Regardless of the outcome, you will receive a code at the end to ensure you're compensated for your time. Please make sure to stay until the end.</p>
+                            </div>
+                        </div>
+
+                        <div class="row p-2 m-2 bg-light bg-gradient rounded border border-secondary">
+                            <form>
+                                <div class="form-check form-switch">
+                                    <input id="confirmEnter" name="confirm_enter" class="form-check-input consent" type="checkbox">
+                                    <label class="form-check-label" for="confirmEnter"><small>I understand the task and agree to the 
+                                            <a id="participant_agreement" href="http://54.193.217.145/iui2024/assets/consent.pdf" target="_blank"><abbr
+                                                    title="click for complete terms and conditions">Participation Agreement</abbr>.</a></small> </label>
+                                </div>
+                            </form>
+                        </div>
+
+
+
+                    </div>
+
+
                 </div>
                 <div class="modal-footer">
                     <button id="start" name="start_experiment" type="button" class="startExperiment btn btn-success">Start Now</button>
@@ -166,7 +210,7 @@
                 <h5 class="modal-title" id="dynamicModalLabel">Modal title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div id="dynamicModalBody" class="modal-body">
                 Modal content goes here...
             </div>
             <div class="modal-footer">
@@ -178,7 +222,7 @@
 
 <!-- Carousel From here -->
 {% if recommendation_type == 'carousel' %}
-    <div class="container my-4">
+    <div id="recoms" class="container my-4">
         {% for genre, genre_movies in recommendations.items() %}
         {% set outer_loop = loop %}  <!-- Move this line inside the main loop -->
         <h2 class="carouselHeader mt-4 mb-0">{{ genre }} Movies</h2>
@@ -218,7 +262,7 @@
             <div class="card h-100 shadow-sm">
                 <div class="row g-0">
                     <div class="col-md-2">
-                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }} Poster" class="list_image img-fluid rounded-start" style="object-fit: cover; width:150px!important;">
+                        <img src="{{ movie.Poster }}" alt="{{ movie.Title }} Poster" class="list_image img-fluid rounded-start" style="object-fit: cover; width:125px!important;">
                     </div>
                     <div class="col-md-10">
                         <div class="card-body d-flex flex-column justify-content-between" data-row-position="{{ loop.index0 }}">
@@ -275,7 +319,7 @@
 const showModal = (title, content, className, dismissible, button_text='Ok') => {
     // Update modal title and content
     $('#dynamicModalLabel').text(title);
-    $('.modal-body').html(content);
+    $('#dynamicModalBody').html(content);
     // Apply the class to the modal (if specified)
     if (className) {
         $('#dynamicModal .modal-header').removeClass().addClass('modal-header').addClass(className);
@@ -295,10 +339,6 @@ const showModal = (title, content, className, dismissible, button_text='Ok') => 
     // Show the modal
     $('#dynamicModal').modal('show');
 };
-
-function showtaskdesc(){
-    showModal("Task description", "You have a chance to win a movie on your streaming service of choice. In each round, you will be presented with a set of movies. Select the movie you most want to have. You have 20 seconds to browse and 10 seconds to decide. There are 10 rounds so this takes around 3-4 minutes. Your selections help determine if you win, but even if you don’t, you’ll still get a code at the end to get paid for your time.", "bg-primary", false);
-}
 
         // Initialize variables using Flask context
         let iteration = {{iteration}};
@@ -342,6 +382,16 @@ function showtaskdesc(){
 
            // let recommendations = {{recommendations | tojson}};
 
+           var timer;
+
+           $(document).mousemove(function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+              showModal("Please complete the task","You have been inactive for 5 seconds. Please interact with the recommendations. Click 'Close' to continue.","bg-danger text-white inactive",false);
+            }, 5000); // 5000 milliseconds = 5 seconds
+          });
+
+
 
                 // Update the phase and display every second
 intloop = setInterval(() => {
@@ -353,6 +403,11 @@ intloop = setInterval(() => {
          
         });
 
+
+        $("#opneInstruction").on("click", function () {
+        $("#intro").modal('show');
+        });
+
         $("#start").on("click", function () {
             if ($('#confirmEnter').is(':checked')) {
                 $('#intro').modal('hide');
@@ -362,35 +417,10 @@ intloop = setInterval(() => {
             }
         });
 
-            // Test checkbox behavior:
-$("#confirmEnter").on("click", function () {
-    if ($(this).is(':checked')) {
-        console.log("Checkbox is checked");
-    } else {
-        console.log("Checkbox is unchecked");
-    }
-});
 
-            $("#start").on("click", function () {
-                if ($('#confirmEnter').is(':checked')) {
-                    $('#intro').modal('hide');
-                } else {
-                    $('#confirmEnter').css('border-color', 'red');
-                    $('#confirmEnter').focus();
-                }
-            });
-
-                // Test checkbox behavior:
-    $("#confirmEnter").on("click", function () {
-        if ($(this).is(':checked')) {
-            console.log("Checkbox is checked");
-        } else {
-            console.log("Checkbox is unchecked");
-        }
-    });
-
-    document.getElementById('intro').addEventListener('click', function(event) {
+   document.getElementById('intro').addEventListener('click', function(event) {
         event.stopPropagation();  // Prevents this checkbox from triggering other actions
+
     });
 
         // Combined event listener for click logging and phase management
@@ -399,7 +429,7 @@ $("#confirmEnter").on("click", function () {
             let orig_target_className = e.target.className
             let target = e.target.closest('.movie-item');
 
-            console.log('Click detected', target);  // Log when a click is detected
+            //console.log('Click detected', target);  // Log when a click is detected
 
             let movieId = 'not_set';
             let col_position = 0;
@@ -428,9 +458,7 @@ $("#confirmEnter").on("click", function () {
                 genre = target.getAttribute('data-genre');
                 click_on_movie = true;
 
-                console.log('Movie clicked:', movieId, col_position, row_position, genre);
-            } else {
-                console.log("outside was clicked!");
+                //console.log('Movie clicked:', movieId, col_position, row_position, genre);
             }
             // Log the click event
             logEvent('click', {
@@ -456,9 +484,9 @@ $("#confirmEnter").on("click", function () {
                 if(orig_target_id == 'selectthismovie'){
                     //alert("submitting data");
                     localStorage.setItem('welcome', 'false');
-                    sendData();
+                    //sendData();
                 }
-        //sendData();  // Send data to the server
+        sendData();  
 
         });
 
@@ -501,7 +529,7 @@ if (phase === 'browsing'){
 
 
     if(iteration > 1 &&  welcome == 'false'){
-        showModal('Thank you', 'Thank you for submitting your choice. Click ok to start the browsing task for round '+{{iteration}}, 'bg-success text-white', true);
+        showModal('Submitted', 'Thank you for submitting your choice! <br> When you\’re ready, click \'Close\' to start browsing movies for round '+{{iteration}}+'.' , 'bg-success text-white', true);
         localStorage.setItem('welcome', 'true');
     }
             // Initialize interactionLog if it doesn't already exist
@@ -512,8 +540,8 @@ if (phase === 'browsing'){
             // Retrieve the interactionLog from localStorage
             let consent = localStorage.getItem('consent_confirm');
 
-    if(consent == 'false'){
-        console.log("Showing intro");
+    if(consent == 'false'){      
+
         $('#intro').modal('show');
         phaseStartTime =  new Date();
         localStorage.setItem('consent_confirm','true');
@@ -539,17 +567,20 @@ if (phase === 'browsing' && elapsedTime >= 20000) {
         phaseDuration = 10000; // 10 seconds for decision
 
         // Show a modal indicating entering decision phase
-        showModal('Time\'s up', 'You are entering the decision making phase. Please select the movie YOU WANT THE MOST within in next 10 seconds.', 'bg-success text-white', true);
+        showModal('Time\'s up', 'You are now in the decision-making phase. Please choose the movie you want most (click on green "Select this movie" button) within the next 10 seconds.', 'bg-success text-white', true);
         $("html, body").animate({scrollTop: 0}, 500);
     } else if (phase === 'decision' && elapsedTime >= 10000) {
         // Decision phase over
         if (iteration <= 10) {  
             //showModal('Time\'s up', 'You are entering the decision phase. Please select the movie you want the most within in next 10 seconds.', 'bg-success text-white', false);
-            let userConfirmed = confirm('You did not select any movie but it\'s OK. Please make sure you select a movie witin the first 10 seconds of decision making phase next time.');
+            let userConfirmed = confirm('Hey there! Let\'s make sure we\'re on the same page. When it\'s time to choose a movie, please remember to click on the "Select this movie\" button under the movie you want right away. This helps us keep things moving smoothly. If you miss too many selections, it might affect your HIT. If you\'re finding this process too frustrating, feel free to leave.');
             if(userConfirmed){
                 phase = 'browsing';
+                sendData();
                 document.getElementById('next-iteration-form').submit();
                 return;
+            }else{
+                location.reload();
             }
         }
     }
@@ -570,11 +601,11 @@ const updatePhaseDisplay = () => {
 
     // Update phase name and background color for "Deciding" phase
     if (phase === 'decision') {
-        currenttask.innerText = 'Deciding...';
+        currenttask.innerText = '> Submit the movie you want using "Selcet this movie" button within 10 seonds.';
         phaseNameElement.innerText = 'Decision';
         phaseNameElement.parentElement.classList.add('bg-danger', 'text-white');
     } else {
-        currenttask.innerText = 'Browsing...';
+        currenttask.innerText = '> Browse the movies in the list and check out their information as you like.';
         phaseNameElement.innerText = phase.charAt(0).toUpperCase() + phase.slice(1);
         phaseNameElement.parentElement.style.backgroundColor = ''; // Reset background color
     }
@@ -599,12 +630,12 @@ const updatePhaseDisplay = () => {
 };
 
 // Event listeners for modal show/hide to track pause time
-$('#dynamicModal').on('shown.bs.modal', function () {
+$('.modal').on('shown.bs.modal', function () {
     pauseStartTime = new Date();  // Set the time when the modal was shown
     isTimerPaused = true;
 });
 
-$('#dynamicModal').on('hidden.bs.modal', function () {
+$('.modal').on('hidden.bs.modal', function () {
     if (pauseStartTime) {
         // Calculate the time the modal was open and add it to totalPauseDuration
         totalPauseDuration += new Date() - pauseStartTime;
@@ -613,85 +644,66 @@ $('#dynamicModal').on('hidden.bs.modal', function () {
     isTimerPaused = false;
 });
 
-// Event listeners for modal show/hide to track pause time
-$('#intro').on('shown.bs.modal', function () {
-    pauseStartTime = new Date();  // Set the time when the modal was shown
-    isTimerPaused = true;
-});
 
-$('#intro').on('hidden.bs.modal', function () {
-    if (pauseStartTime) {
-        // Calculate the time the modal was open and add it to totalPauseDuration
-        totalPauseDuration += new Date() - pauseStartTime;
-        pauseStartTime = null;  // Reset the pause start time
-    }
-    isTimerPaused = false;
-});
+// Data Submission Script
+const sendData = () => {
+    // Prepare data
+    const data = {
+        user_id: {{user_id}},
+    interactions: interactionLog,
+    session_parameters: {{current_parameters | tojson }},
+    start_time: sessionStartTime,
+    end_time: new Date().toISOString(),
+    recommendations: {{recommendations| tojson}}
+    };
 
-        // Data Submission Script
-        const sendData = () => {
-            // Prepare data
-            const data = {
-                user_id: {{user_id}},
-            interactions: interactionLog,
-            session_parameters: {{current_parameters | tojson }},
-            start_time: sessionStartTime,
-            end_time: new Date().toISOString(),
-            recommendations: {{recommendations| tojson}}
-            };
+//console.log('Sending data:', data);  // Log data before sending
 
-        console.log('Sending data:', data);  // Log data before sending
+// Send data via AJAX
+fetch("{{url_for('submit_data')}}",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    },
+    body: JSON.stringify(data)
+})
+    .then(response => {
 
-        // Send data via AJAX
-        fetch("{{url_for('submit_data')}}",{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-
-                console.log('Server response:', response);  // Log server response
-                if (response.ok) {
-                    return response.json();  // Parse the JSON response
+        //console.log('Server response:', response);  // Log server response
+        if (response.ok) {
+            return response.json();  // Parse the JSON response
 
 
-                } else {
-                    throw new Error('Server error');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);  // Log any errors
-                alert('An error occurred while submitting data.');
-            });
+        } else {
+            throw new Error('Server error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);  // Log any errors
+        alert('An error occurred while submitting data.');
+    });
 
-        };
+};
 
-        $('#dynamicModal').on('shown.bs.modal', function () {
+        $('.modal').on('shown.bs.modal', function () {
             // Pause the timer when the modal is shown
-            console.log('time is paused');
+            //console.log('down- time is paused');
             isTimerPaused = true;
+
+            $("#recoms").css("filter", "blur(5px)");
+
         });
         
-        $('#dynamicModal').on('hidden.bs.modal', function () {
+        $('.modal').on('hidden.bs.modal', function () {
             // Resume the timer when the modal is closed
-            console.log('time restarts');
+            //console.log('down- time restarts');
             isTimerPaused = false;
+            $("#recoms").css("filter", "none");
+            
         });
 
-        $('#intro').on('shown.bs.modal', function () {
-            // Pause the timer when the modal is shown
-            console.log('time is paused');
-            isTimerPaused = true;
-        });
-        
-        $('#intro').on('hidden.bs.modal', function () {
-            // Resume the timer when the modal is closed
-            console.log('time restarts');
-            isTimerPaused = false;
-        });
+
 
 
     </script>
