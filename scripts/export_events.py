@@ -1,6 +1,6 @@
 """Export de-identified event and session tables from the IUI'25 CARE movie study.
 usage: python -I export_events.py <raw dir> <out dir>
-- participant ids: P### in sorted raw-id order (same as build.py); raw platform ids are dropped
+- participant ids: P### in sorted raw-id order; raw platform ids are dropped
 - times: seconds from the participant's first logged event; calendar dates dropped
 - keydown: only non-character keys kept (character keys -> 'char')
 - surveys: age band, digital comfort, internet usage (coded as in the raw file)"""

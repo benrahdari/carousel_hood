@@ -14,7 +14,7 @@ from datetime import datetime
 
 # Initialize Flask app
 app = Flask(__name__)
-app.secret_key = "insight_general_ai_evaluation_system"
+app.secret_key = os.environ.get("FLASK_SECRET_KEY") or os.urandom(32)
 
 csrf = CSRFProtect(app)
 
@@ -23,8 +23,8 @@ app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
 # Configuration for data paths
-MOVIES_PATH = 'data/movie_metadata.json'  # Update with the correct path
-RATINGS_PATH = 'data/ratings.csv'         # Update with the correct path
+MOVIES_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'movie_metadata.json')
+RATINGS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'ratings.csv')
 
 # MovieRecommender Class
 class MovieRecommender:
@@ -281,7 +281,7 @@ import string
 
 
 def generate_user_id():
-    """Generates a user ID with the format: one digit - three letters - four digits."""
+    """Generates an 8-digit user ID; it is also shown to the participant as the completion code."""
     return ''.join(random.choices(string.digits[1:], k=8))
 
 # Landing page route
@@ -294,7 +294,7 @@ def landing_page():
         baseline_param = request.args.get('baseline', 'popularity')  # 'random' or 'popularity'
         ui_param = request.args.get('ui', 'carousel')             # 'carousel' or 'list'
         mouse_logging_param = request.args.get('mouse_logging', 'true')
-        mouse_logging_freq_param = request.args.get('mouse_logging_freq', '1000')  # Default 500ms
+        mouse_logging_freq_param = request.args.get('mouse_logging_freq', '1000')  # sampling interval in ms (1000 in the study)
 
         # Set session parameters
         session['parameters'] = {
