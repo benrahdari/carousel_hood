@@ -1,0 +1,6 @@
+The data files in this folder (sessions.csv, shown_titles.csv, events.csv) are licensed under the
+Creative Commons Attribution 4.0 International License (CC BY 4.0).
+Full text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Movie ids, titles, years and genres come from the MovieLens dataset (GroupLens Research,
+University of Minnesota) and remain subject to the MovieLens license; see ../study_app/data/README.md.

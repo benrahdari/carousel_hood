@@ -1,0 +1,8 @@
+flask
+flask-session
+flask-wtf
+pandas
+numpy
+torch
+# Spotlight is not maintained on PyPI; install from GitHub:
+git+https://github.com/maciejkula/spotlight.git
