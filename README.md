@@ -52,7 +52,7 @@ Logs are written to `study_app/experiment_data/` (git-ignored). Two instruction 
 `templates/recommendations.html` point to the original study server and need to be replaced for a new deployment.
 
 ## Citation
-Please cite the IUI '25 paper above. If you use the data, also cite the dataset record (Zenodo DOI, to be added).
+Please cite the IUI '25 paper above. If you use the data, also cite the dataset: https://doi.org/10.5281/zenodo.24361731
 
 ## License
 Code: MIT (`LICENSE`). Data in `release/`: CC BY 4.0. MovieLens data: MovieLens license.
